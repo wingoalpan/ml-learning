@@ -1,0 +1,6 @@
+本transformer代码主要基于 https://mdnice.com/writing/fc0b920d4ca84837a5712df1a46865d2 的代码为基础版本，
+并参考了 https://github.com/P3n9W31/transformer-pytorch 的信息 进行改造而来。
+
+用于transformer 的学习和探索。 初步发现, 对于简单场景 (simple语料)， Multi-Heads Attention 层数设为4，翻译效果比层数6更好。
+
+后面将进一步探索 加入dropout、调整训练轮数等， 对于翻译结果的影响 ...

@@ -1,0 +1,7 @@
+{
+  "simple": {
+    "name": "simple",
+    "last_epoch": 200,
+    "state_file": "simple-model.pkl"
+  }
+}

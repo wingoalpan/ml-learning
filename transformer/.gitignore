@@ -1,3 +1,4 @@
+!.gitkeep
 __pycache__/
 wheels/
 eggs/
@@ -5,5 +6,7 @@ dist/
 *.pyc
 *.log
 log/
-logs/
-
+logs/*
+state_dict/*
+!logs/.gitkeep
+!state_dict/.gitkeep
