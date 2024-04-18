@@ -28,8 +28,8 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 MODEL_TYPE = 'transformer'
 
-ds = TP3n9W31Data()
-# ds = SimpleData()
+# ds = TP3n9W31Data()
+ds = SimpleData()
 
 n_layers = ds.hyperparams.get('num_layers', 6)
 n_heads = ds.hyperparams.get('num_heads', 8)
@@ -77,21 +77,23 @@ def get_attn_subsequence_mask(seq):
 
 
 class ScaledDotProductAttention(nn.Module):
-    def __init__(self):
+    def __init__(self, dropout=0.):
         super(ScaledDotProductAttention, self).__init__()
+        self.dropout = nn.Dropout(p=dropout)
 
     def forward(self, Q, K, V, attn_mask):
         scores = torch.matmul(Q, K.transpose(-1, -2)) / np.sqrt(d_k)
         scores.masked_fill_(attn_mask, -1e9)
         attn = nn.Softmax(dim=-1)(scores)
+        attn = self.dropout(attn)
         context = torch.matmul(attn, V)
-        return context, attn
+        return context
 
 
 class MultiHeadAttention(nn.Module):
-    def __init__(self, causality=False):
+    def __init__(self, dropout=0.):
         super(MultiHeadAttention, self).__init__()
-
+        self.sdp_attn = ScaledDotProductAttention(dropout)
         self.W_Q = nn.Linear(d_model, d_k * n_heads, bias=False)
         self.W_K = nn.Linear(d_model, d_k * n_heads, bias=False)
         self.W_V = nn.Linear(d_model, d_v * n_heads, bias=False)
@@ -99,16 +101,14 @@ class MultiHeadAttention(nn.Module):
 
     def forward(self, input_Q, input_K, input_V, attn_mask):
         residual, batch_size = input_Q, input_Q.size(0)
-        # print('shape input:', input_Q.shape, input_K.shape, input_V.shape, attn_mask.shape)
         Q = self.W_Q(input_Q).view(batch_size, -1, n_heads, d_k).transpose(1, 2)
         K = self.W_K(input_K).view(batch_size, -1, n_heads, d_k).transpose(1, 2)
         V = self.W_V(input_V).view(batch_size, -1, n_heads, d_v).transpose(1, 2)
         attn_mask = attn_mask.unsqueeze(1).repeat(1, n_heads, 1, 1)
-        # print('shape:', Q.shape, K.shape, V.shape, attn_mask.shape)
-        context, attn = ScaledDotProductAttention()(Q, K, V, attn_mask)
+        context = self.sdp_attn(Q, K, V, attn_mask)
         context = context.transpose(1, 2).reshape(batch_size, -1, n_heads * d_v)
         output = self.fc(context)
-        return nn.LayerNorm(d_model).to(device)(output + residual), attn
+        return nn.LayerNorm(d_model).to(device)(output + residual)
 
 
 class PoswiseFeedForwardNet(nn.Module):
@@ -127,72 +127,76 @@ class PoswiseFeedForwardNet(nn.Module):
 
 
 class EncodeLayer(nn.Module):
-    def __init__(self):
+    def __init__(self, dropout=0.):
         super(EncodeLayer, self).__init__()
-        self.enc_self_attn = MultiHeadAttention()
+        self.enc_self_attn = MultiHeadAttention(dropout)
         self.pos_ffn = PoswiseFeedForwardNet()
 
     def forward(self, enc_inputs, enc_self_attn_mask):
-        enc_output, attn = self.enc_self_attn(enc_inputs, enc_inputs, enc_inputs, enc_self_attn_mask)
+        enc_output = self.enc_self_attn(enc_inputs, enc_inputs, enc_inputs, enc_self_attn_mask)
         enc_output = self.pos_ffn(enc_output)
-        return enc_output, attn
+        return enc_output
 
 
 class DecodeLayer(nn.Module):
-    def __init__(self):
+    def __init__(self, dropout=0.):
         super(DecodeLayer, self).__init__()
-        self.dec_self_attn = MultiHeadAttention()
-        self.dec_enc_attn = MultiHeadAttention()
+        self.dec_self_attn = MultiHeadAttention(dropout)
+        self.dec_enc_attn = MultiHeadAttention(dropout)
         self.pos_ffn = PoswiseFeedForwardNet()
 
     def forward(self, dec_inputs, enc_outputs, dec_self_attn_mask, dec_enc_attn_mask):
-        dec_outputs, dec_self_attn = self.dec_self_attn(dec_inputs, dec_inputs, dec_inputs, dec_self_attn_mask)
-        dec_outputs, dec_enc_attn = self.dec_enc_attn(dec_outputs, enc_outputs, enc_outputs, dec_enc_attn_mask)
+        dec_outputs = self.dec_self_attn(dec_inputs, dec_inputs, dec_inputs, dec_self_attn_mask)
+        dec_outputs = self.dec_enc_attn(dec_outputs, enc_outputs, enc_outputs, dec_enc_attn_mask)
         dec_outputs = self.pos_ffn(dec_outputs)
-        return dec_outputs, dec_self_attn, dec_enc_attn
+        return dec_outputs
 
 
 class Encoder(nn.Module):
-    def __init__(self):
+    def __init__(self, dropout=0.):
         super(Encoder, self).__init__()
         self.src_emb = nn.Embedding(ds.src_vocab_size, d_model)
         self.pos_emb = PositionalEncoding(d_model)
-        self.layers = nn.ModuleList([EncodeLayer() for _ in range(n_layers)])
+        self.dropout = nn.Dropout(p=dropout)
+        self.layers = nn.ModuleList([EncodeLayer(dropout) for _ in range(n_layers)])
 
     def forward(self, enc_inputs):
         enc_outputs = self.src_emb(enc_inputs)
         enc_outputs = self.pos_emb(enc_outputs.transpose(0, 1)).transpose(0, 1)
+        enc_outputs = self.dropout(enc_outputs)
         enc_self_attn_mask = get_attn_pad_mask(enc_inputs, enc_inputs)
         for layer in self.layers:
-            enc_outputs, _ = layer(enc_outputs, enc_self_attn_mask)
+            enc_outputs = layer(enc_outputs, enc_self_attn_mask)
         return enc_outputs
 
 
 class Decoder(nn.Module):
-    def __init__(self):
+    def __init__(self, dropout=0.):
         super(Decoder, self).__init__()
         self.tgt_emb = nn.Embedding(ds.tgt_vocab_size, d_model)
         self.pos_emb = PositionalEncoding(d_model)
-        self.layers = nn.ModuleList([DecodeLayer() for _ in range(n_layers)])
+        self.dropout = nn.Dropout(p=dropout)
+        self.layers = nn.ModuleList([DecodeLayer(dropout) for _ in range(n_layers)])
 
     def forward(self, dec_inputs, enc_inputs, enc_outputs):
         dec_outputs = self.tgt_emb(dec_inputs)
         dec_outputs = self.pos_emb(dec_outputs.transpose(0,1)).transpose(0,1).to(device)
+        dec_outputs = self.dropout(dec_outputs)
         dec_self_attn_pad_mask = get_attn_pad_mask(dec_inputs, dec_inputs).to(device)
         dec_self_attn_subsequence_mask = get_attn_subsequence_mask(dec_inputs).to(device)
         dec_self_attn_mask = torch.gt((dec_self_attn_pad_mask + dec_self_attn_subsequence_mask), 0).to(device)
         dec_enc_attn_mask = get_attn_pad_mask(dec_inputs, enc_inputs)
         for layer in self.layers:
-            dec_outputs, _, _ = layer(dec_outputs, enc_outputs,
+            dec_outputs = layer(dec_outputs, enc_outputs,
                                       dec_self_attn_mask, dec_enc_attn_mask)
         return dec_outputs
 
 
 class Transformer(nn.Module):
-    def __init__(self):
+    def __init__(self, dropout=0.):
         super(Transformer, self).__init__()
-        self.encoder = Encoder().to(device)
-        self.decoder = Decoder().to(device)
+        self.encoder = Encoder(dropout).to(device)
+        self.decoder = Decoder(dropout).to(device)
         self.projection = nn.Linear(d_model, ds.tgt_vocab_size, bias=False).to(device)
 
     def forward(self, enc_inputs, dec_inputs):
@@ -350,7 +354,8 @@ def test_2(model):
 
 
 def main():
-    model = Transformer().to(device)
+    _dropout = ds.hyperparams.get('dropout', 0.4)
+    model = Transformer(_dropout).to(device)
     train(model)
     # score_list = evaluate(model)
     # score_table = AsciiTable(score_list)
