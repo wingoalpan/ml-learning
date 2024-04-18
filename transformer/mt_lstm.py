@@ -37,8 +37,6 @@ d_ff = ds.hyperparams.get('feed_forward_units', 512)
 num_epochs = ds.hyperparams.get('num_epochs', 400)
 batch_size = ds.hyperparams.get('batch_size', 32)
 
-d_k = d_v = d_model // n_heads
-
 loader = Data.DataLoader(ds, batch_size, True)
 
 
@@ -205,7 +203,7 @@ if __name__ == "__main__":
     else:
         func = args.params[0]
         if func != 'main':
-            CM.set_log_file(os.path.split(__file__)[-1], suffix=func, timestamp=True)
+            set_log_file(os.path.split(__file__)[-1], suffix=func, timestamp=True)
         param_list = args.params[1:]
         log('executing function [%s] ...' % func)
         eval(func)(*param_list)
