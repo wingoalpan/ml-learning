@@ -241,7 +241,7 @@ def validate(model, num_totals=0):
         i += 1
 
 
-def train(model):
+def train(model, num_epochs, checkpoint_interval=5):
     criterion = nn.CrossEntropyLoss(ignore_index=0)
     optimizer = optim.SGD(model.parameters(), lr=1e-3, momentum=0.99)
     last_epoch = 0
@@ -253,6 +253,7 @@ def train(model):
         model.load_state_dict(torch.load(last_states['file_name'], map_location=torch.device('cpu')))
         last_epoch = last_states['last_epoch']
     train_loss = []
+    file_prefix = '-'.join([p for p in [MODEL_TYPE, model_name if model_name else 'default'] if p])
     for epoch in range(last_epoch, num_epochs):
         for enc_inputs, dec_inputs, dec_outputs in loader:
             enc_inputs = enc_inputs.to(device)
@@ -266,11 +267,11 @@ def train(model):
             loss.backward()
             optimizer.step()
             train_loss.append(loss.item())
-        if (epoch + 1) % 5 == 0:
+        if (epoch + 1) % checkpoint_interval == 0:
             # 保存 checkpoint
-            file_name = 'state_dict\\%s-%s-model.pkl' % (model_name, epoch + 1)
+            file_name = 'state_dict\\%s-%s-model.pkl' % (file_prefix, epoch + 1)
             torch.save(model.state_dict(), file_name)
-            loss_file = 'state_dict\\%s-%s-loss.json' % (model_name, epoch + 1)
+            loss_file = 'state_dict\\%s-%s-loss.json' % (file_prefix, epoch + 1)
             f = open(loss_file, 'w')
             f.write(js.dumps({'train_loss': train_loss[-100:]}, indent=2))
             f.close()
@@ -384,7 +385,7 @@ if __name__ == "__main__":
     else:
         func = args.params[0]
         if func != 'main':
-            CM.set_log_file(os.path.split(__file__)[-1], suffix=func, timestamp=True)
+            set_log_file(os.path.split(__file__)[-1], suffix=func, timestamp=True)
         param_list = args.params[1:]
         log('executing function [%s] ...' % func)
         eval(func)(*param_list)
