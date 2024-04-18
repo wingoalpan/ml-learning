@@ -3,4 +3,9 @@
 
 用于transformer 的学习和探索。 初步发现, 对于简单场景 (simple语料)， Multi-Heads Attention 层数设为4，翻译效果比层数6更好。
 
+增加 mt-lstm 机器翻译模型，用于和transformer模型对比。
+初步看 lstm 比 transformer有差距：
+1. 训练速度远远低于transformer， 耗时是 transformer的大约 10+倍
+2. 训练结果泛化能力明显弱于 transfomer
+
 后面将进一步探索 加入dropout、调整训练轮数等， 对于翻译结果的影响 ...
