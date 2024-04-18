@@ -26,8 +26,10 @@ set_log_file(os.path.split(__file__)[-1], timestamp=True)
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-# ds = TP3n9W31Data()
-ds = SimpleData()
+MODEL_TYPE = 'transformer'
+
+ds = TP3n9W31Data()
+# ds = SimpleData()
 
 n_layers = ds.hyperparams.get('num_layers', 6)
 n_heads = ds.hyperparams.get('num_heads', 8)
@@ -240,9 +242,9 @@ def train(model):
     optimizer = optim.SGD(model.parameters(), lr=1e-3, momentum=0.99)
     last_epoch = 0
     model_name = ds.hyperparams.get('model_name', 'default')
-    last_states = dl_utils.get_last_state('state_dict', model_name, max_epoch=num_epochs)
+    last_states = dl_utils.get_last_state(model_name, MODEL_TYPE, max_epoch=num_epochs)
     if not last_states:
-        last_states = dl_utils.get_model_state('models', model_name)
+        last_states = dl_utils.get_model_state(model_name, MODEL_TYPE)
     if last_states:
         model.load_state_dict(torch.load(last_states['file_name'], map_location=torch.device('cpu')))
         last_epoch = last_states['last_epoch']

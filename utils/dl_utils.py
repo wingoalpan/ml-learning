@@ -105,11 +105,11 @@ def _count_params(net, show_param_shape=False):
     return p_count, '\n'.join(lines)
 
 
-def get_last_state(state_dir='.', prefix='', max_epoch=0):
+def get_last_state(prefix='', model_type='', max_epoch=0, state_dir='state_dict'):
+    prefix = prefix if prefix else 'default'
     states = {}
     pat = r'(?P<last_epoch>\d*)-model.pkl'
-    if prefix:
-        pat = prefix + '-' + pat
+    pat = '-'.join([p for p in [model_type, prefix, pat] if p])
 
     file_names = os.listdir(state_dir)
     for file_name in file_names:
@@ -128,19 +128,20 @@ def get_last_state(state_dir='.', prefix='', max_epoch=0):
     return states
 
 
-def get_model_state(model_dir='.', name=''):
-    if not name:
-        name = 'default'
+def get_model_state(name='', model_type='', model_dir='models'):
+    name = name if name else 'default'
     if not os.path.exists(os.path.join(model_dir, 'model-list.json')):
         return {}
 
     with open(os.path.join(model_dir, 'model-list.json'), 'r', encoding='utf8') as f:
         model_info = js.load(f)
-    if name not in model_info.keys():
+
+    key = '-'.join([p for p in [model_type, name] if p])
+    if key not in model_info.keys():
         return {}
 
-    last_epoch = model_info[name]['last_epoch']
-    file_name = model_info[name]['state_file']
+    last_epoch = model_info[key]['last_epoch']
+    file_name = model_info[key]['state_file']
     return {'last_epoch': last_epoch, 'file_name': os.path.join(model_dir, file_name)}
 
 
