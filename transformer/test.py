@@ -83,7 +83,7 @@ def test_preprocess():
 
 
 def test_last_state():
-    last_states = dl_utils.get_last_state('state_dict', 'train')
+    last_states = dl_utils.get_last_state('simple')
     print(js.dumps(last_states, indent=2))
 
 
@@ -95,7 +95,7 @@ def test_trans():
 
 
 def test_state():
-    print(dl_utils.get_model_state('models', 'simple'))
+    print(dl_utils.get_model_state('simple', 'transformer'))
 
 
 def test_set():
