@@ -34,20 +34,6 @@ demo_sentences = ['我 喜欢 猫 。',
                   '小 花猫',
                   ]
 
-hyperparams = {
-    'batch_size': 4,
-    'hidden_units': 512,
-    'feed_forward_units': 512,
-    'num_heads': 8,
-    'num_layers': 4,  # number of encoder/decoder layers
-    'num_epochs': 200,
-    'dropout': 0.3,    # dropout rate
-    'lr': 1e-3,        # optimizer 's lr parameter
-    'momentum': 0.99,  # optimizer 's momentum parameter
-    'num_validate': 10,
-    'model_name': 'simple',  # 作为保存模型参数状态的文件名前缀
-}
-
 
 # 定义语言翻译数据集的通用接口
 class SimpleData(TransDataset):
@@ -59,7 +45,6 @@ class SimpleData(TransDataset):
 
         self.load_data(data_type)
         self.demo_sentences = demo_sentences
-        self.hyperparams = hyperparams
 
     def load_data(self, data_type):
         sources = [lines[0].strip() for lines in sentences]

@@ -23,20 +23,6 @@ demo_sentences = ['麦凯恩 担任 国会 议员 多 年 , 参加 过 越战 , 
                   '博什格拉夫 没有 说 但 旁观者清 就 是 因为 美国 以为 自己 无所不在 无所不能 要求 所有 国家 唯它 的 马首是瞻',
                   ]
 
-hyperparams = {
-    'batch_size': 48,
-    'hidden_units': 512,
-    'feed_forward_units': 512,
-    'num_heads': 8,
-    'num_layers': 6,  # number of encoder/decoder layers
-    'num_epochs': 200,
-    'dropout': 0.4,    # dropout rate
-    'lr': 1e-3,        # optimizer 's lr parameter
-    'momentum': 0.99,  # optimizer 's momentum parameter
-    'num_validate': 10,
-    'model_name': '',  # 作为保存模型参数状态的文件名前缀
-}
-
 
 # 定义语言翻译数据集的通用接口
 class TP3n9W31Data(TransDataset):
@@ -46,7 +32,6 @@ class TP3n9W31Data(TransDataset):
         self.corpora_dir = corpora_dir
         self.load_data(data_type)
         self.demo_sentences = demo_sentences
-        self.hyperparams = hyperparams
 
     def load_data(self, data_type):
         assert data_type in ["train", "test"]

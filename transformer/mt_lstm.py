@@ -1,9 +1,7 @@
 
 import sys, os
 import argparse
-import math
 import torch
-import numpy as np
 import torch.nn as nn
 import torch.optim as optim
 import torch.utils.data as Data
@@ -28,22 +26,14 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 MODEL_TYPE = 'lstm'
 
-ds = TP3n9W31Data()
-# ds = SimpleData()
-
-n_layers = ds.hyperparams.get('num_lstm_layers', 4)
-d_model = ds.hyperparams.get('hidden_units', 512)
-d_ff = ds.hyperparams.get('feed_forward_units', 512)
-num_epochs = ds.hyperparams.get('num_epochs', 400)
-batch_size = ds.hyperparams.get('batch_size', 32)
-
-loader = Data.DataLoader(ds, batch_size, True)
-
 
 class Encoder(nn.Module):
-    def __init__(self, dropout=0.):
+    def __init__(self, corpora, dropout=0.):
         super(Encoder, self).__init__()
-        self.src_emb = nn.Embedding(ds.src_vocab_size, d_model, padding_idx=0)
+        d_model = corpora.hp.hidden_units
+        n_layers = corpora.hp.num_lstm_layers
+        d_ff = corpora.hp.feed_forward_units
+        self.src_emb = nn.Embedding(corpora.src_vocab_size, d_model, padding_idx=0)
         self.lstm = nn.LSTM(input_size=d_model, hidden_size=d_ff, num_layers=n_layers,
                             batch_first=True, dropout=dropout)
 
@@ -54,9 +44,12 @@ class Encoder(nn.Module):
 
 
 class Decoder(nn.Module):
-    def __init__(self, dropout=0.):
+    def __init__(self, corpora, dropout=0.):
         super(Decoder, self).__init__()
-        self.tgt_emb = nn.Embedding(ds.tgt_vocab_size, d_model, padding_idx=0)
+        d_model = corpora.hp.hidden_units
+        n_layers = corpora.hp.num_lstm_layers
+        d_ff = corpora.hp.feed_forward_units
+        self.tgt_emb = nn.Embedding(corpora.tgt_vocab_size, d_model, padding_idx=0)
         self.lstm = nn.LSTM(input_size=d_model, hidden_size=d_ff, num_layers=n_layers,
                             batch_first=True, dropout=dropout)
 
@@ -67,16 +60,18 @@ class Decoder(nn.Module):
 
 
 class Seq2Seq(nn.Module):
-    def __init__(self, dropout_enc=0., dropout_dec=0.):
+    def __init__(self, corpora, name='', dropout_enc=0., dropout_dec=0.):
         super(Seq2Seq, self).__init__()
-        self.encoder = Encoder(dropout_enc).to(device)
-        self.decoder = Decoder(dropout_dec).to(device)
-        self.projection = nn.Linear(d_model, ds.tgt_vocab_size, bias=False).to(device)
+        self.corpora = corpora
+        self.name = name
+        self.encoder = Encoder(corpora, dropout_enc).to(device)
+        self.decoder = Decoder(corpora, dropout_dec).to(device)
+        self.projection = nn.Linear(corpora.hp.hidden_units, corpora.tgt_vocab_size, bias=False).to(device)
 
     def forward(self, enc_inputs, dec_inputs, teach_rate=0.5):
-        _batch_size = enc_inputs.size(0)
+        batch_size = enc_inputs.size(0)
         dec_seq_len = dec_inputs.size(1)
-        outputs = torch.zeros(_batch_size, dec_seq_len, ds.tgt_vocab_size)
+        outputs = torch.zeros(batch_size, dec_seq_len, self.corpora.tgt_vocab_size)
 
         _, (h, c) = self.encoder(enc_inputs)
         dec_input_slice = dec_inputs[:, 0].view(-1, 1)
@@ -91,12 +86,13 @@ class Seq2Seq(nn.Module):
         return outputs
 
     def translate(self, enc_inputs):
-        _batch_size = enc_inputs.size(0)
-        outputs = torch.zeros(_batch_size, ds.max_tgt_seq_len).to(device)
+        start_symbol_idx = self.corpora.tgt_vocab[self.corpora.start_symbol]
+        batch_size = enc_inputs.size(0)
+        outputs = torch.zeros(batch_size, self.corpora.max_tgt_seq_len).to(device)
 
         _, (h, c) = self.encoder(enc_inputs)
-        dec_input_slice = torch.zeros(_batch_size, 1).fill_(ds.tgt_vocab[ds.start_symbol]).long().to(device)
-        for i in range(0, ds.max_tgt_seq_len):
+        dec_input_slice = torch.zeros(batch_size, 1).fill_(start_symbol_idx).long().to(device)
+        for i in range(0, self.corpora.max_tgt_seq_len):
             dec_output, (h, c) = self.decoder(dec_input_slice, h, c)
             dec_output = self.projection(dec_output)
             top = dec_output.argmax(-1)
@@ -105,38 +101,39 @@ class Seq2Seq(nn.Module):
         return outputs
 
 
-# 从训练样本中抽 num_validate 个来验证翻译结果
-def validate(model, num_totals=0):
+def validate(model, num_validate=10, num_totals=0):
+    corpora = model.corpora
     if num_totals <= 0:
-        num_totals = len(ds.enc_inputs)
-    num_validate = ds.hyperparams.get('num_validate', 10)
+        num_totals = len(corpora.enc_inputs)
     all_indices = list(range(num_totals))
     random.shuffle(all_indices)
     sample_indices = all_indices[:num_validate]
-    src_sentences = [ds.sources[i] for i in sample_indices]
-    tgt_sentences = [ds.targets[i] for i in sample_indices]
-    enc_inputs = ds.preprocess(src_sentences).to(device)
+    src_sentences = [corpora.sources[i] for i in sample_indices]
+    tgt_sentences = [corpora.targets[i] for i in sample_indices]
+    enc_inputs = corpora.preprocess(src_sentences)
     log('translating ...')
     translated = model.translate(enc_inputs)
     i = 0
     for src, tgt, pred in zip(src_sentences, tgt_sentences, translated):
         print('%s.' % (i + 1), src)
         print('==', tgt)
-        print('->', ' '.join([ds.tgt_idx2w[n.item()] for n in pred.squeeze()]).split(ds.terminate_symbol)[0], '\n')
+        print('->', corpora.to_tgt_sentence(pred.squeeze(0), first=True), '\n')
         i += 1
 
 
-def train(model):
+def train(model, loader, num_epochs, force_retrain=False, checkpoint_interval=5):
     criterion = nn.CrossEntropyLoss(ignore_index=0).to(device)
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
     last_epoch = 0
-    model_name = ds.hyperparams.get('model_name', 'default')
-    last_states = dl_utils.get_last_state(model_name, MODEL_TYPE, max_epoch=num_epochs)
-    if not last_states:
-        last_states = dl_utils.get_model_state(model_name, MODEL_TYPE)
-    if last_states:
-        model.load_state_dict(torch.load(last_states['file_name'], map_location=torch.device('cpu')))
-        last_epoch = last_states['last_epoch']
+    model_name = model.name if model.name else 'default'
+    # 如果不强制重训练，则尝试继承之前训练结果
+    if not force_retrain:
+        last_states = dl_utils.get_last_state(model_name, MODEL_TYPE, max_epoch=num_epochs)
+        if not last_states:
+            last_states = dl_utils.get_model_state(model_name, MODEL_TYPE)
+        if last_states:
+            model.load_state_dict(torch.load(last_states['file_name'], map_location=torch.device('cpu')))
+            last_epoch = last_states['last_epoch']
     train_loss = []
     file_prefix = '-'.join([p for p in [MODEL_TYPE, model_name if model_name else 'default'] if p])
     for epoch in range(last_epoch, num_epochs):
@@ -145,14 +142,14 @@ def train(model):
             dec_inputs = dec_inputs.to(device)
             dec_outputs = dec_outputs.to(device)
             outputs = model(enc_inputs, dec_inputs)
-            outputs = outputs.reshape(-1, ds.tgt_vocab_size).to(device)
+            outputs = outputs.reshape(-1, model.corpora.tgt_vocab_size).to(device)
             loss = criterion(outputs, dec_outputs.view(-1))
             log('epoch: {:4d}, loss = {:.6f}'.format(epoch + 1, loss))
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
             train_loss.append(loss.item())
-        if (epoch + 1) % 5 == 0:
+        if checkpoint_interval > 0 and (epoch + 1) % checkpoint_interval == 0:
             # 保存 checkpoint
             file_name = 'state_dict\\%s-%s-model.pkl' % (file_prefix, epoch + 1)
             torch.save(model.state_dict(), file_name)
@@ -165,23 +162,27 @@ def train(model):
 
 
 def test(model):
-    sentences = ds.demo_sentences
-    enc_inputs = ds.preprocess(sentences).to(device)
+    corpora = model.corpora
+    enc_inputs = corpora.preprocess(corpora.demo_sentences).to(device)
     print()
     print("=" * 30)
     print("利用训练好的Transformer模型将中文句子 翻译成英文句子: ")
     dec_outputs = model.translate(enc_inputs)
     i = 0
-    for enc_input, greedy_dec_predict in zip(enc_inputs, dec_outputs):
-        print('%s.' % (i + 1), ''.join([ds.src_idx2w[t.item()] for t in enc_input if t > 0]))
-        print('->', ' '.join([ds.tgt_idx2w[n.item()] for n in greedy_dec_predict]).split(ds.terminate_symbol)[0], '\n')
+    for enc_input, predict in zip(enc_inputs, dec_outputs):
+        print('%s.' % (i + 1), corpora.to_src_sentence(enc_input, ''))
+        print('->', corpora.to_tgt_sentence(predict), '\n')
         i += 1
 
 
 def main():
-    _dropout = ds.hyperparams.get('dropout', 0.4)
-    model = Seq2Seq(_dropout, _dropout).to(device)
-    train(model)
+    # corpora = TP3n9W31Data()
+    corpora = SimpleData()
+    batch_size = 4
+    _dropout = 0.
+    loader = Data.DataLoader(corpora, batch_size, True)
+    model = Seq2Seq(corpora, 'simple', _dropout, _dropout).to(device)
+    train(model, loader, 200, force_retrain=False)
     validate(model)
     test(model)
 

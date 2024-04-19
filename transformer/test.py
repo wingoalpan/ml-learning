@@ -106,6 +106,15 @@ def test_set():
         print(i, ':', n)
 
 
+def test_hp():
+    corpora = SimpleData()
+    print('hyper params: \n', corpora.hp.text())
+    corpora.update_hyper_params({'num_layers': 4})
+    print('new hyper params: \n', corpora.hp.text())
+    corpora.update_hyper_params({'hidden_units': 256})
+    print('latest hyper params: \n', corpora.hp.text())
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("params", nargs="*")

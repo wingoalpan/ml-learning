@@ -1,7 +1,7 @@
 model-list.json 文件用于记录当前的模型信息，格式如下：
 
 {
-  "simple": {
+  "transformer-simple": {    # 该 key 值由模型类型和模型名字拼成，形式：<model-type>-<model-name>, 其中模型类型如transformer, lstm等。
     "name": "simple",
     "last_epoch": 200,
     "state_file": "simple-model.pkl"

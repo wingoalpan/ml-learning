@@ -28,20 +28,6 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 MODEL_TYPE = 'transformer'
 
-# ds = TP3n9W31Data()
-ds = SimpleData()
-
-n_layers = ds.hyperparams.get('num_layers', 6)
-n_heads = ds.hyperparams.get('num_heads', 8)
-d_model = ds.hyperparams.get('hidden_units', 512)
-d_ff = ds.hyperparams.get('feed_forward_units', 512)
-num_epochs = ds.hyperparams.get('num_epochs', 400)
-batch_size = ds.hyperparams.get('batch_size', 32)
-
-d_k = d_v = d_model // n_heads
-
-loader = Data.DataLoader(ds, batch_size, True)
-
 
 class PositionalEncoding(nn.Module):
     def __init__(self, d_model, dropout=0.1, max_len=5000):
@@ -62,11 +48,11 @@ class PositionalEncoding(nn.Module):
 
 
 def get_attn_pad_mask(seq_q, seq_k):
-    _batch_size, len_q = seq_q.size()
-    _batch_size_, len_k = seq_k.size()
+    batch_size, len_q = seq_q.size()
+    batch_size, len_k = seq_k.size()
 
     pad_attn_mask = seq_k.data.eq(0).unsqueeze(1)
-    return pad_attn_mask.expand(_batch_size, len_q, len_k)
+    return pad_attn_mask.expand(batch_size, len_q, len_k)
 
 
 def get_attn_subsequence_mask(seq):
@@ -82,6 +68,7 @@ class ScaledDotProductAttention(nn.Module):
         self.dropout = nn.Dropout(p=dropout)
 
     def forward(self, Q, K, V, attn_mask):
+        d_k = K.size(-1)
         scores = torch.matmul(Q, K.transpose(-1, -2)) / np.sqrt(d_k)
         scores.masked_fill_(attn_mask, -1e9)
         attn = nn.Softmax(dim=-1)(scores)
@@ -91,46 +78,55 @@ class ScaledDotProductAttention(nn.Module):
 
 
 class MultiHeadAttention(nn.Module):
-    def __init__(self, dropout=0.):
+    def __init__(self, d_model=512, n_heads=8, dropout=0.):
         super(MultiHeadAttention, self).__init__()
+        d_k = d_v = d_model // n_heads
+        self.n_heads = n_heads
+        self.d_k = d_k
+        self.d_v = d_v
         self.sdp_attn = ScaledDotProductAttention(dropout)
         self.W_Q = nn.Linear(d_model, d_k * n_heads, bias=False)
         self.W_K = nn.Linear(d_model, d_k * n_heads, bias=False)
         self.W_V = nn.Linear(d_model, d_v * n_heads, bias=False)
         self.fc = nn.Linear(n_heads * d_v, d_model, bias=False)
+        self.layer_norm = nn.LayerNorm(d_model)
 
     def forward(self, input_Q, input_K, input_V, attn_mask):
         residual, batch_size = input_Q, input_Q.size(0)
-        Q = self.W_Q(input_Q).view(batch_size, -1, n_heads, d_k).transpose(1, 2)
-        K = self.W_K(input_K).view(batch_size, -1, n_heads, d_k).transpose(1, 2)
-        V = self.W_V(input_V).view(batch_size, -1, n_heads, d_v).transpose(1, 2)
-        attn_mask = attn_mask.unsqueeze(1).repeat(1, n_heads, 1, 1)
+        Q = self.W_Q(input_Q).view(batch_size, -1, self.n_heads, self.d_k).transpose(1, 2)
+        K = self.W_K(input_K).view(batch_size, -1, self.n_heads, self.d_k).transpose(1, 2)
+        V = self.W_V(input_V).view(batch_size, -1, self.n_heads, self.d_v).transpose(1, 2)
+        attn_mask = attn_mask.unsqueeze(1).repeat(1, self.n_heads, 1, 1)
         context = self.sdp_attn(Q, K, V, attn_mask)
-        context = context.transpose(1, 2).reshape(batch_size, -1, n_heads * d_v)
+        context = context.transpose(1, 2).reshape(batch_size, -1, self.n_heads * self.d_v)
         output = self.fc(context)
-        return nn.LayerNorm(d_model).to(device)(output + residual)
+        return self.layer_norm(output + residual)
 
 
 class PoswiseFeedForwardNet(nn.Module):
-    def __init__(self):
+    def __init__(self, d_model=512, d_ff=512):
         super(PoswiseFeedForwardNet, self).__init__()
         self.fc = torch.nn.Sequential(
             nn.Linear(d_model, d_ff, bias=False),
             nn.ReLU(),
             nn.Linear(d_ff, d_model, bias=False)
         )
+        self.layer_norm = nn.LayerNorm(d_model)
 
     def forward(self, inputs):
         residual = inputs
         output = self.fc(inputs)
-        return nn.LayerNorm(d_model).to(device)(output + residual)
+        return self.layer_norm(output + residual)
 
 
 class EncodeLayer(nn.Module):
-    def __init__(self, dropout=0.):
+    def __init__(self, corpora, dropout=0.):
         super(EncodeLayer, self).__init__()
-        self.enc_self_attn = MultiHeadAttention(dropout)
-        self.pos_ffn = PoswiseFeedForwardNet()
+        d_model = corpora.hp.hidden_units
+        n_heads = corpora.hp.num_heads
+        d_ff = corpora.hp.feed_forward_units
+        self.enc_self_attn = MultiHeadAttention(d_model, n_heads, dropout=dropout)
+        self.pos_ffn = PoswiseFeedForwardNet(d_model, d_ff)
 
     def forward(self, enc_inputs, enc_self_attn_mask):
         enc_output = self.enc_self_attn(enc_inputs, enc_inputs, enc_inputs, enc_self_attn_mask)
@@ -139,11 +135,14 @@ class EncodeLayer(nn.Module):
 
 
 class DecodeLayer(nn.Module):
-    def __init__(self, dropout=0.):
+    def __init__(self, corpora, dropout=0.):
         super(DecodeLayer, self).__init__()
-        self.dec_self_attn = MultiHeadAttention(dropout)
-        self.dec_enc_attn = MultiHeadAttention(dropout)
-        self.pos_ffn = PoswiseFeedForwardNet()
+        d_model = corpora.hp.hidden_units
+        n_heads = corpora.hp.num_heads
+        d_ff = corpora.hp.feed_forward_units
+        self.dec_self_attn = MultiHeadAttention(d_model, n_heads, dropout=dropout)
+        self.dec_enc_attn = MultiHeadAttention(d_model, n_heads, dropout=dropout)
+        self.pos_ffn = PoswiseFeedForwardNet(d_model, d_ff)
 
     def forward(self, dec_inputs, enc_outputs, dec_self_attn_mask, dec_enc_attn_mask):
         dec_outputs = self.dec_self_attn(dec_inputs, dec_inputs, dec_inputs, dec_self_attn_mask)
@@ -153,12 +152,14 @@ class DecodeLayer(nn.Module):
 
 
 class Encoder(nn.Module):
-    def __init__(self, dropout=0.):
+    def __init__(self, corpora, dropout=0.):
         super(Encoder, self).__init__()
-        self.src_emb = nn.Embedding(ds.src_vocab_size, d_model)
+        d_model = corpora.hp.hidden_units
+        n_layers = corpora.hp.num_layers
+        self.src_emb = nn.Embedding(corpora.src_vocab_size, d_model)
         self.pos_emb = PositionalEncoding(d_model)
         self.dropout = nn.Dropout(p=dropout)
-        self.layers = nn.ModuleList([EncodeLayer(dropout) for _ in range(n_layers)])
+        self.layers = nn.ModuleList([EncodeLayer(corpora, dropout) for _ in range(n_layers)])
 
     def forward(self, enc_inputs):
         enc_outputs = self.src_emb(enc_inputs)
@@ -171,12 +172,14 @@ class Encoder(nn.Module):
 
 
 class Decoder(nn.Module):
-    def __init__(self, dropout=0.):
+    def __init__(self, corpora, dropout=0.):
         super(Decoder, self).__init__()
-        self.tgt_emb = nn.Embedding(ds.tgt_vocab_size, d_model)
+        d_model = corpora.hp.hidden_units
+        n_layers = corpora.hp.num_layers
+        self.tgt_emb = nn.Embedding(corpora.tgt_vocab_size, d_model)
         self.pos_emb = PositionalEncoding(d_model)
         self.dropout = nn.Dropout(p=dropout)
-        self.layers = nn.ModuleList([DecodeLayer(dropout) for _ in range(n_layers)])
+        self.layers = nn.ModuleList([DecodeLayer(corpora, dropout) for _ in range(n_layers)])
 
     def forward(self, dec_inputs, enc_inputs, enc_outputs):
         dec_outputs = self.tgt_emb(dec_inputs)
@@ -188,16 +191,18 @@ class Decoder(nn.Module):
         dec_enc_attn_mask = get_attn_pad_mask(dec_inputs, enc_inputs)
         for layer in self.layers:
             dec_outputs = layer(dec_outputs, enc_outputs,
-                                      dec_self_attn_mask, dec_enc_attn_mask)
+                                dec_self_attn_mask, dec_enc_attn_mask)
         return dec_outputs
 
 
 class Transformer(nn.Module):
-    def __init__(self, dropout=0.):
+    def __init__(self, corpora, name='', dropout=0.):
         super(Transformer, self).__init__()
-        self.encoder = Encoder(dropout).to(device)
-        self.decoder = Decoder(dropout).to(device)
-        self.projection = nn.Linear(d_model, ds.tgt_vocab_size, bias=False).to(device)
+        self.corpora = corpora
+        self.name = name
+        self.encoder = Encoder(corpora, dropout).to(device)
+        self.decoder = Decoder(corpora, dropout).to(device)
+        self.projection = nn.Linear(corpora.hp.hidden_units, corpora.tgt_vocab_size, bias=False).to(device)
 
     def forward(self, enc_inputs, dec_inputs):
         enc_outputs = self.encoder(enc_inputs)
@@ -206,13 +211,15 @@ class Transformer(nn.Module):
         return dec_logit.view(-1, dec_logit.size(-1))
 
     def translate(self, enc_inputs):
-        _batch_size = enc_inputs.size(0)
+        start_symbol_idx = self.corpora.tgt_vocab[self.corpora.start_symbol]
+        terminate_symbol_idx = self.corpora.tgt_vocab[self.corpora.terminate_symbol]
+        batch_size = enc_inputs.size(0)
         x_ = torch.LongTensor(enc_inputs).to(device)
-        terminate_tag = torch.zeros(_batch_size, 1).fill_(ds.tgt_vocab[ds.terminate_symbol]).long().to(device)
-        dec_inputs = torch.zeros(_batch_size, 1).fill_(ds.tgt_vocab[ds.start_symbol]).long().to(device)
-        for i in range(ds.max_tgt_seq_len):
+        terminate_tag = torch.zeros(batch_size, 1).fill_(terminate_symbol_idx).long().to(device)
+        dec_inputs = torch.zeros(batch_size, 1).fill_(start_symbol_idx).long().to(device)
+        for i in range(self.corpora.max_tgt_seq_len):
             _logits = self(x_, dec_inputs)
-            _logits = _logits.view(enc_inputs.size(0), -1, ds.tgt_vocab_size)
+            _logits = _logits.view(enc_inputs.size(0), -1, self.corpora.tgt_vocab_size)
             _, _preds = torch.max(_logits, dim=-1)
             if _preds[:, -1:].equal(terminate_tag):
                 break
@@ -221,37 +228,39 @@ class Transformer(nn.Module):
 
 
 # 从训练样本中抽 num_validate 个来验证翻译结果
-def validate(model, num_totals=0):
+def validate(model, num_validate=10, num_totals=0):
+    corpora = model.corpora
     if num_totals <= 0:
-        num_totals = len(ds.enc_inputs)
-    num_validate = ds.hyperparams.get('num_validate', 10)
+        num_totals = len(corpora.enc_inputs)
     all_indices = list(range(num_totals))
     random.shuffle(all_indices)
     sample_indices = all_indices[:num_validate]
-    src_sentences = [ds.sources[i] for i in sample_indices]
-    tgt_sentences = [ds.targets[i] for i in sample_indices]
-    enc_inputs = ds.preprocess(src_sentences)
+    src_sentences = [corpora.sources[i] for i in sample_indices]
+    tgt_sentences = [corpora.targets[i] for i in sample_indices]
+    enc_inputs = corpora.preprocess(src_sentences)
     log('translating ...')
     translated = model.translate(enc_inputs)
     i = 0
     for src, tgt, pred in zip(src_sentences, tgt_sentences, translated):
         print('%s.' % (i + 1), src)
         print('==', tgt)
-        print('->', ' '.join([ds.tgt_idx2w[n.item()] for n in pred.squeeze()]).split(ds.terminate_symbol)[0], '\n')
+        print('->', corpora.to_tgt_sentence(pred.squeeze(0), first=True), '\n')
         i += 1
 
 
-def train(model, num_epochs, checkpoint_interval=5):
+def train(model, loader, num_epochs, force_retrain=False, checkpoint_interval=5):
     criterion = nn.CrossEntropyLoss(ignore_index=0)
     optimizer = optim.SGD(model.parameters(), lr=1e-3, momentum=0.99)
     last_epoch = 0
-    model_name = ds.hyperparams.get('model_name', 'default')
-    last_states = dl_utils.get_last_state(model_name, MODEL_TYPE, max_epoch=num_epochs)
-    if not last_states:
-        last_states = dl_utils.get_model_state(model_name, MODEL_TYPE)
-    if last_states:
-        model.load_state_dict(torch.load(last_states['file_name'], map_location=torch.device('cpu')))
-        last_epoch = last_states['last_epoch']
+    model_name = model.name if model.name else 'default'
+    # 如果不强制重训练，则尝试继承之前训练结果
+    if not force_retrain:
+        last_states = dl_utils.get_last_state(model_name, MODEL_TYPE, max_epoch=num_epochs)
+        if not last_states:
+            last_states = dl_utils.get_model_state(model_name, MODEL_TYPE)
+        if last_states:
+            model.load_state_dict(torch.load(last_states['file_name'], map_location=torch.device('cpu')))
+            last_epoch = last_states['last_epoch']
     train_loss = []
     file_prefix = '-'.join([p for p in [MODEL_TYPE, model_name if model_name else 'default'] if p])
     for epoch in range(last_epoch, num_epochs):
@@ -259,7 +268,6 @@ def train(model, num_epochs, checkpoint_interval=5):
             enc_inputs = enc_inputs.to(device)
             dec_inputs = dec_inputs.to(device)
             dec_outputs = dec_outputs.to(device)
-            # outputs, enc_self_attns, dec_self_attns, dec_enc_attns = model(enc_inputs, dec_inputs)
             outputs = model(enc_inputs, dec_inputs)
             loss = criterion(outputs, dec_outputs.view(-1))
             log('epoch: {:4d}, loss = {:.6f}'.format(epoch + 1, loss))
@@ -267,7 +275,7 @@ def train(model, num_epochs, checkpoint_interval=5):
             loss.backward()
             optimizer.step()
             train_loss.append(loss.item())
-        if (epoch + 1) % checkpoint_interval == 0:
+        if checkpoint_interval > 0 and (epoch + 1) % checkpoint_interval == 0:
             # 保存 checkpoint
             file_name = 'state_dict\\%s-%s-model.pkl' % (file_prefix, epoch + 1)
             torch.save(model.state_dict(), file_name)
@@ -280,6 +288,7 @@ def train(model, num_epochs, checkpoint_interval=5):
 
 
 def greedy_decoder(model, enc_input, start_symbol):
+    corpora = model.corpora
     enc_outputs = model.encoder(enc_input)
     dec_input = torch.zeros(1, 0).type_as(enc_input.data)
     terminal = False
@@ -295,31 +304,32 @@ def greedy_decoder(model, enc_input, start_symbol):
         # 拿出当前预测的单词(数字)。我们用x'_t对应的输出z_t去预测下一个单词的概率，不用z_1,z_2..z_{t-1}
         next_word = prob.data[-1]
         next_symbol = next_word
-        if next_symbol == ds.tgt_vocab[ds.terminate_symbol]:
+        if next_symbol == corpora.terminate_symbol_idx:
             terminal = True
     greedy_dec_predict = dec_input[:, 1:]
     return greedy_dec_predict
 
 
 def predict_greedy(model, enc_inputs):
+    corpora = model.corpora
     dec_outputs = []
     for enc_input in enc_inputs:
         dec_output = greedy_decoder(model, enc_input.view(
-            1, -1).to(device), start_symbol=ds.tgt_vocab[ds.start_symbol])
+            1, -1).to(device), start_symbol=corpora.start_symbol_idx)
         dec_outputs.append(dec_output.squeeze(0))
     return dec_outputs
 
 
 def predict_batch(model, enc_inputs):
+    corpora = model.corpora
     x_ = torch.LongTensor(enc_inputs).to(device)
-    _batch_size = enc_inputs.size(0)
-    terminate_idx = ds.tgt_vocab[ds.terminate_symbol]
-    terminate_tag = torch.ones(_batch_size, 1) * terminate_idx
-    start_inputs = torch.zeros((enc_inputs.size(0), 1)).fill_(ds.tgt_vocab[ds.start_symbol]).long().to(device)
+    batch_size = enc_inputs.size(0)
+    terminate_tag = torch.ones(batch_size, 1) * corpora.terminate_symbol_idx
+    start_inputs = torch.zeros((enc_inputs.size(0), 1)).fill_(corpora.start_symbol_idx).long().to(device)
     dec_inputs = start_inputs
-    for i in range(ds.max_tgt_seq_len):
+    for i in range(corpora.max_tgt_seq_len):
         _logits = model(x_, dec_inputs)
-        _logits = _logits.view(enc_inputs.size(0), -1, ds.tgt_vocab_size)
+        _logits = _logits.view(enc_inputs.size(0), -1, corpora.tgt_vocab_size)
         _, _preds = torch.max(_logits, dim=-1)
         if _preds[:, -1:].equal(terminate_tag):
             break
@@ -327,45 +337,57 @@ def predict_batch(model, enc_inputs):
     return dec_inputs[:, 1:]
 
 
-def test(model):
-    sentences = ds.demo_sentences
-    enc_inputs = ds.preprocess(sentences)
+def test_1(model):
+    corpora = model.corpora
+    enc_inputs = corpora.preprocess(corpora.demo_sentences)
     print()
     print("=" * 30)
     print("利用训练好的Transformer模型将中文句子 翻译成英文句子: ")
     dec_outputs = predict_greedy(model, enc_inputs)
     i = 0
     for enc_input, greedy_dec_predict in zip(enc_inputs, dec_outputs):
-        print('%s.' % (i + 1), ''.join([ds.src_idx2w[t.item()] for t in enc_input if t > 0]))
-        print('->', ' '.join([ds.tgt_idx2w[n.item()] for n in greedy_dec_predict]), '\n')
+        print('%s.' % (i + 1), corpora.to_src_sentence(enc_input, ''))
+        print('->', corpora.to_tgt_sentence(greedy_dec_predict), '\n')
         i += 1
 
 
 def test_2(model):
-    enc_inputs = ds.preprocess(ds.demo_sentences)
+    corpora = model.corpora
+    enc_inputs = corpora.preprocess(corpora.demo_sentences)
     print()
     print("=" * 30)
     print("利用训练好的Transformer模型将中文句子 翻译成英文句子: ")
     dec_outputs = predict_batch(model, enc_inputs)
     i = 0
     for enc_input, pred in zip(enc_inputs, dec_outputs):
-        print('%s.' % (i + 1), ''.join([ds.src_idx2w[t.item()] for t in enc_input if t > 0]))
-        print('->', ' '.join([ds.tgt_idx2w[n.item()] for n in pred.squeeze()]).split(ds.terminate_symbol)[0], '\n')
+        print('%s.' % (i + 1), corpora.to_src_sentence(enc_input, ''))
+        print('->', corpora.to_tgt_sentence(pred.squeeze()), '\n')
         i += 1
 
 
+def test(model):
+    # 1. test with greedy_decoder
+    # test_1(model)
+    # 2. test with normal method
+    test_2(model)
+
+
 def main():
-    _dropout = ds.hyperparams.get('dropout', 0.4)
-    model = Transformer(_dropout).to(device)
-    train(model)
+    # corpora = TP3n9W31Data()
+    corpora = SimpleData()
+    batch_size = 4
+    _dropout = 0.1
+    loader = Data.DataLoader(corpora, batch_size, True)
+    model = Transformer(corpora, 'simple', dropout=_dropout).to(device)
+    train(model, loader, 200, force_retrain=False)
     # score_list = evaluate(model)
     # score_table = AsciiTable(score_list)
     # log("\n" + score_table.table)
 
-    # log('validating model ...')
+    log('validating model ...')
     validate(model)
+    log('test demo sentences ...')
     test(model)
-    #test_2(model)
 
 
 def show_net():
