@@ -92,7 +92,8 @@ class TransDataset(Data.Dataset):
 
     def to_tgt_sentence(self, dec_output, sep=' ', first=False):
         if first:
-            return sep.join([self.tgt_idx2w[idx.item()] for idx in dec_output if idx >0]).split(self.terminate_symbol)[0]
+            return sep.join([self.tgt_idx2w[idx.item()] for idx in dec_output if idx >0]).split(
+                self.terminate_symbol)[0].strip()
         else:
             return sep.join([self.tgt_idx2w[idx.item()] for idx in dec_output if idx >0])
 
