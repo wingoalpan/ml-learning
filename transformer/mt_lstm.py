@@ -132,7 +132,7 @@ def train(model, loader, num_epochs, force_retrain=False, checkpoint_interval=5)
         if not last_states:
             last_states = dl_utils.get_model_state(model_name, MODEL_TYPE)
         if last_states:
-            model.load_state_dict(torch.load(last_states['file_name'], map_location=torch.device('cpu')))
+            model.load_state_dict(torch.load(last_states['file_name'], map_location=device))
             last_epoch = last_states['last_epoch']
     train_loss = []
     file_prefix = '-'.join([p for p in [MODEL_TYPE, model_name if model_name else 'default'] if p])
