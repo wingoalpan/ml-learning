@@ -16,9 +16,11 @@ sentences = [['我 喜欢 猫 。', 'I like cats .'],
              ['花猫', 'tabby cat'],
              ['白', 'white'],
              ['黑', 'black'],
+             ['有', 'have'],
              ['没有', 'have no'],
              ['一只', 'a'],
              ['两只', 'two'],
+             ['。', '.'],
              ]
 
 demo_sentences = ['我 喜欢 猫 。',
