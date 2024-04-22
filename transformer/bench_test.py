@@ -117,6 +117,8 @@ def train(cases, model_type, force_retrain=True):
                    checkpoint_interval=0,
                    checkpoints=checkpoints)
         train_seconds = time.time() - start_time
+        log('training time consumed: %s secs (model_type: %s, name: %s, epochs: %s) !' %
+            (train_seconds, model_type.MODEL_TYPE, name, num_epochs))
         train_metrics['train_seconds'] = train_seconds
 
         # update the training metrics (training time consumed) to cases
