@@ -2,11 +2,19 @@
 import sys, os
 import argparse
 import json as js
+import torch
+import torch.utils.data as Data
 from dataset_P3n9W31 import TP3n9W31Data
 from dataset_simple import SimpleData
+import bleu
+from collections.abc import Iterable
+import transformer
+import mt_lstm
+import bench_test
 
 sys.path.append('..\\utils')
 sys.path.append('..\\..\\wingoal_utils')
+import common as CM
 from common import (
     set_log_file,
     log,
@@ -16,6 +24,7 @@ import dl_utils
 
 set_log_file(os.path.split(__file__)[-1], timestamp=True)
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def main():
     test_data_train()
@@ -83,7 +92,7 @@ def test_preprocess():
 
 
 def test_last_state():
-    last_states = dl_utils.get_last_state('simple')
+    last_states = dl_utils.get_last_state('simple_dropout0.3', 'lstm', 5)
     print(js.dumps(last_states, indent=2))
 
 
@@ -113,6 +122,124 @@ def test_hp():
     print('new hyper params: \n', corpora.hp.text())
     corpora.update_hyper_params({'hidden_units': 256})
     print('latest hyper params: \n', corpora.hp.text())
+
+
+def test_ngrams():
+    candidate = 'It is a guide to action which ensures that the military always obeys the commands of the party'
+    refs = ['It is a guide to action that ensures that the military will forever heed Party commands',
+            'It is the guiding principle which guarantees the military forces always being under the command of the Party',
+            'It is the practical guide for the army always to heed the directions of the party']
+
+    refs_counter = bleu.ngrams(refs, 2)
+    pred_counter = bleu.ngrams(candidate, 2)
+    print('refs 2-grams:', refs_counter)
+    print('pred 2-grams:', pred_counter)
+    print('clip 2-grams:', pred_counter & refs_counter)
+
+
+def test_bleu():
+    candidate_list = ['It is a guide to action which ensures that the military always obeys the commands of the party',
+                      'I wish the world keep peace and prosperous']
+    refs_list = [['It is a guide to action that ensures that the military will forever heed Party commands',
+                  'It is the guiding principle which guarantees the military forces always being under the command of the Party',
+                  'It is the practical guide for the army always to heed the directions of the party'],
+                 ['I wish the world is always peaceful and prosperous',
+                  'I hope that the world is always peaceful and prosperous'
+                 ]]
+
+    print('bleu-1 score:', bleu.bleu(candidate_list, refs_list, 1))
+    print('bleu-2 score:', bleu.bleu(candidate_list, refs_list, 2))
+    print('bleu-3 score:', bleu.bleu(candidate_list, refs_list, 3))
+    print('bleu-4 score:', bleu.bleu(candidate_list, refs_list, 4))
+
+
+def test_load_json():
+    node = {'name': '张三', '年龄': 16}
+    CM.save_json(node, 'logs/test_save_json.json')
+
+    obj = CM.load_json('logs/test_save_json.json')
+    print(js.dumps(obj, indent=2, ensure_ascii=False))
+
+
+def test_checkpoints():
+    checkpoints = None
+    if isinstance(checkpoints, list):
+        checkpoints = iter(checkpoints)
+    checkpoint = next(checkpoints) if isinstance(checkpoints, Iterable) else -1
+    print(checkpoint)
+
+    checkpoints = 3
+    if isinstance(checkpoints, list):
+        checkpoints = iter(checkpoints)
+    checkpoint = next(checkpoints) if isinstance(checkpoints, Iterable) else -1
+    print(checkpoint)
+
+    checkpoints = [3, 4, 6]
+    if isinstance(checkpoints, list):
+        checkpoints = iter(checkpoints)
+    checkpoint = next(checkpoints) if isinstance(checkpoints, Iterable) else -1
+    print(checkpoint)
+
+
+bench_test_sentences = [('我 喜欢 黑 猫 。',  'I like black cat .'),
+                        ('我 有 一只 小 花猫 。',  'I have a little tabby cat . '),
+                        ('我 不 喜欢 白 猫', "I don't like white cat"),
+                        ('我 有 两只 黑 猫', 'I have two black cat'),
+                        ('我 没有 白 猫', 'I have no white cat'),
+                        ('我 喜欢 小 花猫', 'I like little tabby cat'),
+                        ('我 喜欢 小 黑 猫', 'I like little black cat'),
+                        ('一只 黑 猫', 'a black cat'),
+                        ('两只 白 猫', 'two white cat'),
+                        ('没有 两只 白 猫', 'have no two white cat'),
+                        ('不 喜欢 小 花猫', "don't like little tabby cat"),
+                        ('喜欢 小 白 猫', "like little white cat"),
+                        ]
+
+
+def test_train():
+    corpora = SimpleData()
+    batch_size = 6
+    dropout = 0.
+    checkpoint_interval = 0
+    checkpoints = [5,10,20,40,75,100]
+    num_epochs = 1000
+    loader = Data.DataLoader(corpora, batch_size, True)
+    model = transformer.create_model(corpora, name='lr_test_drop0.1', dropout=dropout).to(device)
+    transformer.train(model, loader, num_epochs, force_retrain=False, checkpoint_interval=100, checkpoints=None)
+
+    test_sentences = bench_test_sentences
+    src_sentences = [item[0] for item in test_sentences]
+    refs_sentences = [[item[1]] for item in test_sentences]
+    enc_inputs = corpora.preprocess(src_sentences).to(device)
+
+    dec_outputs = model.translate(enc_inputs)
+    candidates = []
+    for enc_input, dec_output, refs in zip(enc_inputs, dec_outputs, refs_sentences):
+        prediction = corpora.to_tgt_sentence(dec_output, first=True)
+        print(js.dumps({
+            'source': corpora.to_src_sentence(enc_input),
+            'translated': prediction,
+            'references': refs if len(refs) > 1 else refs[0]
+        }, indent=2, ensure_ascii=False))
+        candidates.append(prediction)
+    metric_bleu = bleu.bleu(candidates, refs_sentences, 2)
+    log('translation bleu:', metric_bleu)
+
+
+def test_model_trained():
+    epochs = [50, 200]
+    print(bench_test._model_trained('simple_dropout0.0', 'transformer', epochs))
+    epochs = [50, 100, 200, 300, 400, 600, 800, 1000]
+    print(bench_test._model_trained('simple_dropout0.0', 'transformer', epochs))
+    epochs = [50, 200, 500]
+    print(bench_test._model_trained('simple_dropout0.0', 'transformer', epochs))
+    test_cases = CM.load_json('benchmark/test-benchmark.json')
+    test_cases = bench_test.benchmark_cases if test_cases is None else test_cases
+    log('training transformer... ')
+    bench_test.train(test_cases, transformer, force_retrain=False)
+    log('training mt_lstm... ')
+    bench_test.train(test_cases, mt_lstm, force_retrain=False)
+    CM.save_json(test_cases, 'benchmark/test-benchmark-test.json')
 
 
 if __name__ == "__main__":

@@ -7,6 +7,7 @@ import torch.optim as optim
 import torch.utils.data as Data
 import json as js
 import random
+from collections.abc import Iterable
 
 from dataset_P3n9W31 import TP3n9W31Data
 from dataset_simple import SimpleData
@@ -101,6 +102,10 @@ class Seq2Seq(nn.Module):
         return outputs
 
 
+def create_model(corpora, name='', dropout=0.):
+    return Seq2Seq(corpora, name, dropout, dropout)
+
+
 def validate(model, num_validate=10, num_totals=0):
     corpora = model.corpora
     if num_totals <= 0:
@@ -111,17 +116,35 @@ def validate(model, num_validate=10, num_totals=0):
     src_sentences = [corpora.sources[i] for i in sample_indices]
     tgt_sentences = [corpora.targets[i] for i in sample_indices]
     enc_inputs = corpora.preprocess(src_sentences)
-    log('translating ...')
     translated = model.translate(enc_inputs)
-    i = 0
+
+    success = True
+    passed, failed = 0, 0
+    detail = []
     for src, tgt, pred in zip(src_sentences, tgt_sentences, translated):
-        print('%s.' % (i + 1), src)
-        print('==', tgt)
-        print('->', corpora.to_tgt_sentence(pred.squeeze(0), first=True), '\n')
-        i += 1
+        translated = corpora.to_tgt_sentence(pred.squeeze(0), first=True)
+        if tgt == translated:
+            passed += 1
+        else:
+            failed += 1
+            detail.append({
+                'source': src,
+                'target': tgt,
+                'translated': translated
+            })
+            success = False
+    validate_result = {'success': success, 'num_validate': num_validate, 'passed': passed, 'failed': failed, 'detail': detail}
+    return validate_result
 
 
-def train(model, loader, num_epochs, force_retrain=False, checkpoint_interval=5):
+# checkpoint的两种配置方式：
+# 1. checkpoint_interval: 保存训练模型参数的轮数间隔，0或小于0，则不会保存模型结果到文件中
+# 2. checkpoints: 指定保存哪些训练轮次的训练结果。提供此参数是基于解决模型存储空间的考虑
+def train(model, loader, num_epochs, force_retrain=False, checkpoint_interval=5, checkpoints=None):
+    if isinstance(checkpoints, list):
+        checkpoints = iter(checkpoints)
+    checkpoint = next(checkpoints) if isinstance(checkpoints, Iterable) else -1
+
     criterion = nn.CrossEntropyLoss(ignore_index=0).to(device)
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
     last_epoch = 0
@@ -149,7 +172,8 @@ def train(model, loader, num_epochs, force_retrain=False, checkpoint_interval=5)
             loss.backward()
             optimizer.step()
             train_loss.append(loss.item())
-        if checkpoint_interval > 0 and (epoch + 1) % checkpoint_interval == 0:
+        if (checkpoint_interval > 0 and (epoch + 1) % checkpoint_interval == 0)\
+                or epoch + 1 == checkpoint:
             # 保存 checkpoint
             file_name = 'state_dict\\%s-%s-model.pkl' % (file_prefix, epoch + 1)
             torch.save(model.state_dict(), file_name)
@@ -157,6 +181,11 @@ def train(model, loader, num_epochs, force_retrain=False, checkpoint_interval=5)
             f = open(loss_file, 'w')
             f.write(js.dumps({'train_loss': train_loss[-100:]}, indent=2))
             f.close()
+            if checkpoint > 0:
+                try:
+                    checkpoint = next(checkpoints)
+                except StopIteration:
+                    checkpoint = -1
 
     return model
 
@@ -181,9 +210,16 @@ def main():
     batch_size = 4
     _dropout = 0.
     loader = Data.DataLoader(corpora, batch_size, True)
-    model = Seq2Seq(corpora, 'simple', _dropout, _dropout).to(device)
-    train(model, loader, 200, force_retrain=False)
-    validate(model)
+    model = Seq2Seq(corpora, 'simple_dropout0.3', _dropout, _dropout).to(device)
+    train(model, loader, 50, force_retrain=False)
+    log('validating ...')
+    result = validate(model)
+    if result['success']:
+        log('validate result: OK')
+    else:
+        log('validate result: Failed (failed = %s, passed = %s)' % (result['failed'], result['passed']))
+        logs('validate detail:', js.dumps(result['detail'], indent=2, ensure_ascii=False))
+
     test(model)
 
 
