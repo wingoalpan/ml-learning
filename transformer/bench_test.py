@@ -63,12 +63,20 @@ benchmark_cases = {
         'dropout': 0.1,
     },
     "simple_dropout0.3": {
-        'alias': 'simp_drop01',
+        'alias': 'simp_drop03',
         'corpora': 'SimpleData',
         'test_sentences': benchmark_test_sentences,
         'num_epochs': 1000,
         'batch_size': 6,
         'dropout': 0.3,
+    },
+    "simple_dropout0.4": {
+        'alias': 'simp_drop04',
+        'corpora': 'SimpleData',
+        'test_sentences': benchmark_test_sentences,
+        'num_epochs': 1000,
+        'batch_size': 6,
+        'dropout': 0.4,
     },
 }
 
@@ -155,9 +163,9 @@ def translate(cases, model_type):
                 candidates.append(prediction)
             # calculate the translation accuracy by BLEU method
             metric_bleu = bleu.bleu(candidates, refs_sentences, 2)
-            trans_metrics[latest_epoch] = {'translate_seconds': metric_translate_seconds,
-                                           'translate_bleu': metric_bleu,
-                                           'translate_seqs': translated_seqs}
+            trans_metrics[str(latest_epoch)] = {'translate_seconds': metric_translate_seconds,
+                                                'translate_bleu': metric_bleu,
+                                                'translate_seqs': translated_seqs}
         # update the translation metrics (translating time consumed, bleu etc.) to cases
         model_metrics['trans_metric'] = trans_metrics
         metrics[model_type.MODEL_TYPE] = model_metrics
@@ -178,7 +186,7 @@ def report(cases):
             case_name_prefix = '-'.join([model_type, name])
             # 提取训练相关度量信息
             train_ids.append(case_name_prefix)
-            train_secs.append(metrics['train_metric'].get('train_seconds'))
+            train_secs.append(metrics.get('train_metric', {}).get('train_seconds', 0.0))
             # 提取翻译相关度量信息
             trans_secs = []
             trans_bleu = []
