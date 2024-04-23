@@ -1,0 +1,4518 @@
+{
+  "simple_dropout0.0": {
+    "alias": "simp_drop0",
+    "corpora": "SimpleData",
+    "test_sentences": [
+      [
+        "我 喜欢 黑 猫 。",
+        "I like black cat ."
+      ],
+      [
+        "我 有 一只 小 花猫 。",
+        "I have a little tabby cat . "
+      ],
+      [
+        "我 不 喜欢 白 猫",
+        "I don't like white cat"
+      ],
+      [
+        "我 有 两只 黑 猫",
+        "I have two black cat"
+      ],
+      [
+        "我 没有 白 猫",
+        "I have no white cat"
+      ],
+      [
+        "我 喜欢 小 花猫",
+        "I like little tabby cat"
+      ],
+      [
+        "我 喜欢 小 黑 猫",
+        "I like little black cat"
+      ],
+      [
+        "一只 黑 猫",
+        "a black cat"
+      ],
+      [
+        "两只 白 猫",
+        "two white cat"
+      ],
+      [
+        "没有 两只 白 猫",
+        "have no two white cat"
+      ],
+      [
+        "不 喜欢 小 花猫",
+        "don't like little tabby cat"
+      ],
+      [
+        "喜欢 小 白 猫",
+        "like little white cat"
+      ]
+    ],
+    "num_epochs": 1000,
+    "batch_size": 6,
+    "dropout": 0.0,
+    "benchmark": {
+      "lstm": {
+        "train_metric": {
+          "train_seconds": 38.01418352127075
+        },
+        "trans_metric": {
+          "50": {
+            "translate_seconds": 0.05600094795227051,
+            "translate_bleu": 0.3199931146813448,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like white cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I like cats .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no black cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "cat",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "cat",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "don't",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": ".",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": ".",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "100": {
+            "translate_seconds": 0.002999544143676758,
+            "translate_bleu": 0.3135279408692781,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like white cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I like cats .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no black cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": ".",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "cat",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": ".",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": ".",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "200": {
+            "translate_seconds": 0.0025069713592529297,
+            "translate_bleu": 0.3135279408692781,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like white cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I like cats .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no black cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": ".",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "cat",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": ".",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": ".",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "300": {
+            "translate_seconds": 0.002000093460083008,
+            "translate_bleu": 0.3135279408692781,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like white cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I like cats .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no black cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": ".",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "cat",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": ".",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": ".",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "400": {
+            "translate_seconds": 0.00260162353515625,
+            "translate_bleu": 0.3135279408692781,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like white cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I like cats .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no black cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": ".",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "cat",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": ".",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": ".",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "600": {
+            "translate_seconds": 0.0019998550415039062,
+            "translate_bleu": 0.3199931146813448,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like white cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I like cats .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no black cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": ".",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "cat",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": ".",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "like",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "800": {
+            "translate_seconds": 0.0019996166229248047,
+            "translate_bleu": 0.3199931146813448,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like white cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I like cats .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no black cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": ".",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "cat",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": ".",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "like",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "1000": {
+            "translate_seconds": 0.0019998550415039062,
+            "translate_bleu": 0.3199931146813448,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like white cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I like cats .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no black cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": ".",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": ".",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "like",
+                "references": "like little white cat"
+              }
+            ]
+          }
+        }
+      },
+      "transformer": {
+        "train_metric": {
+          "train_seconds": 116.06018376350403
+        },
+        "trans_metric": {
+          "50": {
+            "translate_seconds": 0.12336874008178711,
+            "translate_bleu": 0.7002048709406932,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like black cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "I have",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like little tabby cat",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "100": {
+            "translate_seconds": 0.062003374099731445,
+            "translate_bleu": 0.7279719258260582,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I have a",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "I",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no white cat .",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "200": {
+            "translate_seconds": 0.05898714065551758,
+            "translate_bleu": 0.6977373146533348,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a white cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two little tabby cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "I",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no white cat",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "300": {
+            "translate_seconds": 0.059821128845214844,
+            "translate_bleu": 0.7279719258260582,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two little tabby cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have two white cat .",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "400": {
+            "translate_seconds": 0.05350637435913086,
+            "translate_bleu": 0.7716774657271722,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have two white cat .",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "600": {
+            "translate_seconds": 0.0628960132598877,
+            "translate_bleu": 0.789304725259984,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "800": {
+            "translate_seconds": 0.054753780364990234,
+            "translate_bleu": 0.7226494462892933,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two little tabby cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have white cat .",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "1000": {
+            "translate_seconds": 0.0610353946685791,
+            "translate_bleu": 0.705447353291099,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a white cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two little tabby cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have two white cat",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "simple_dropout0.1": {
+    "alias": "simp_drop01",
+    "corpora": "SimpleData",
+    "test_sentences": [
+      [
+        "我 喜欢 黑 猫 。",
+        "I like black cat ."
+      ],
+      [
+        "我 有 一只 小 花猫 。",
+        "I have a little tabby cat . "
+      ],
+      [
+        "我 不 喜欢 白 猫",
+        "I don't like white cat"
+      ],
+      [
+        "我 有 两只 黑 猫",
+        "I have two black cat"
+      ],
+      [
+        "我 没有 白 猫",
+        "I have no white cat"
+      ],
+      [
+        "我 喜欢 小 花猫",
+        "I like little tabby cat"
+      ],
+      [
+        "我 喜欢 小 黑 猫",
+        "I like little black cat"
+      ],
+      [
+        "一只 黑 猫",
+        "a black cat"
+      ],
+      [
+        "两只 白 猫",
+        "two white cat"
+      ],
+      [
+        "没有 两只 白 猫",
+        "have no two white cat"
+      ],
+      [
+        "不 喜欢 小 花猫",
+        "don't like little tabby cat"
+      ],
+      [
+        "喜欢 小 白 猫",
+        "like little white cat"
+      ]
+    ],
+    "num_epochs": 1000,
+    "batch_size": 6,
+    "dropout": 0.1,
+    "benchmark": {
+      "lstm": {
+        "train_metric": {
+          "train_seconds": 36.483086824417114
+        },
+        "trans_metric": {
+          "50": {
+            "translate_seconds": 0.002000093460083008,
+            "translate_bleu": 0.4597365211597631,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "have like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "like",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "like no",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "100": {
+            "translate_seconds": 0.003000020980834961,
+            "translate_bleu": 0.306055695312384,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "don't",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "like",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "like",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "like",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "200": {
+            "translate_seconds": 0.003000497817993164,
+            "translate_bleu": 0.306055695312384,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "don't",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "like",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "like",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "like",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "300": {
+            "translate_seconds": 0.0019996166229248047,
+            "translate_bleu": 0.306055695312384,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "don't",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "like",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "like",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "like",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "400": {
+            "translate_seconds": 0.0030002593994140625,
+            "translate_bleu": 0.306055695312384,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "don't",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "like",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "like",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "like",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "600": {
+            "translate_seconds": 0.0030002593994140625,
+            "translate_bleu": 0.306055695312384,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "don't",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "like",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "like",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "like",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "800": {
+            "translate_seconds": 0.003000020980834961,
+            "translate_bleu": 0.306055695312384,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "don't",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "like",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "like",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "like",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "1000": {
+            "translate_seconds": 0.0019998550415039062,
+            "translate_bleu": 0.306055695312384,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "don't",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "like",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "like",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "like",
+                "references": "like little white cat"
+              }
+            ]
+          }
+        }
+      },
+      "transformer": {
+        "train_metric": {
+          "train_seconds": 86.80951046943665
+        },
+        "trans_metric": {
+          "50": {
+            "translate_seconds": 0.0753316879272461,
+            "translate_bleu": 0.6607577996937601,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I have a",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "I have two",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no black cat .",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat .",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "100": {
+            "translate_seconds": 0.07188892364501953,
+            "translate_bleu": 0.7472813650731784,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I black cat",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white cat",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "200": {
+            "translate_seconds": 0.07206177711486816,
+            "translate_bleu": 0.726286998052074,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "I",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like little tabby cat",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "300": {
+            "translate_seconds": 0.08550739288330078,
+            "translate_bleu": 0.7524422040622799,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white cat",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "400": {
+            "translate_seconds": 0.07122564315795898,
+            "translate_bleu": 0.7692937446106499,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "I",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no white cat .",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "600": {
+            "translate_seconds": 0.0764772891998291,
+            "translate_bleu": 0.7148200766175247,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two little tabby cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white cat",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no white cat .",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "800": {
+            "translate_seconds": 0.0650639533996582,
+            "translate_bleu": 0.7725521164320882,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white cat",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "1000": {
+            "translate_seconds": 0.07055282592773438,
+            "translate_bleu": 0.7705213484555682,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two little tabby cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "a",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white cat",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "simple_dropout0.3": {
+    "alias": "simp_drop03",
+    "corpora": "SimpleData",
+    "test_sentences": [
+      [
+        "我 喜欢 黑 猫 。",
+        "I like black cat ."
+      ],
+      [
+        "我 有 一只 小 花猫 。",
+        "I have a little tabby cat . "
+      ],
+      [
+        "我 不 喜欢 白 猫",
+        "I don't like white cat"
+      ],
+      [
+        "我 有 两只 黑 猫",
+        "I have two black cat"
+      ],
+      [
+        "我 没有 白 猫",
+        "I have no white cat"
+      ],
+      [
+        "我 喜欢 小 花猫",
+        "I like little tabby cat"
+      ],
+      [
+        "我 喜欢 小 黑 猫",
+        "I like little black cat"
+      ],
+      [
+        "一只 黑 猫",
+        "a black cat"
+      ],
+      [
+        "两只 白 猫",
+        "two white cat"
+      ],
+      [
+        "没有 两只 白 猫",
+        "have no two white cat"
+      ],
+      [
+        "不 喜欢 小 花猫",
+        "don't like little tabby cat"
+      ],
+      [
+        "喜欢 小 白 猫",
+        "like little white cat"
+      ]
+    ],
+    "num_epochs": 1000,
+    "batch_size": 6,
+    "dropout": 0.3,
+    "benchmark": {
+      "lstm": {
+        "train_metric": {
+          "train_seconds": 52.8897008895874
+        },
+        "trans_metric": {
+          "50": {
+            "translate_seconds": 0.0019998550415039062,
+            "translate_bleu": 0.3001751147452529,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like white cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "two",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "two",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "like",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "100": {
+            "translate_seconds": 0.002999544143676758,
+            "translate_bleu": 0.2941103458429042,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like white cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "two",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": ".",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "200": {
+            "translate_seconds": 0.0020003318786621094,
+            "translate_bleu": 0.2941103458429042,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like white cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "two",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": ".",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "300": {
+            "translate_seconds": 0.0020003318786621094,
+            "translate_bleu": 0.31757163613928996,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "two",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": ".",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "400": {
+            "translate_seconds": 0.0015048980712890625,
+            "translate_bleu": 0.31757163613928996,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "two",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": ".",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "600": {
+            "translate_seconds": 0.0020003318786621094,
+            "translate_bleu": 0.31757163613928996,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "two",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": ".",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "800": {
+            "translate_seconds": 0.0029985904693603516,
+            "translate_bleu": 0.31757163613928996,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "two",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": ".",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "1000": {
+            "translate_seconds": 0.0029997825622558594,
+            "translate_bleu": 0.31757163613928996,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like cats .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "two",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": ".",
+                "references": "like little white cat"
+              }
+            ]
+          }
+        }
+      },
+      "transformer": {
+        "train_metric": {
+          "train_seconds": 84.09955668449402
+        },
+        "trans_metric": {
+          "50": {
+            "translate_seconds": 0.059658050537109375,
+            "translate_bleu": 0.655090072069399,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I like",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "I",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat .",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "100": {
+            "translate_seconds": 0.0475766658782959,
+            "translate_bleu": 0.6368763581692165,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like cats .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white cat",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat .",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "200": {
+            "translate_seconds": 0.08100533485412598,
+            "translate_bleu": 0.6712675715764056,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a white cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white cat",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like little tabby cat",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like little",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "300": {
+            "translate_seconds": 0.05471324920654297,
+            "translate_bleu": 0.7508116547640528,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a white cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like black cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "I",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no white cat .",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "400": {
+            "translate_seconds": 0.06550979614257812,
+            "translate_bleu": 0.7270951937820115,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a white cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "I",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no white cat .",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "600": {
+            "translate_seconds": 0.059131622314453125,
+            "translate_bleu": 0.7298235749033761,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a white cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white cat",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "800": {
+            "translate_seconds": 0.05670285224914551,
+            "translate_bleu": 0.7620876235775199,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white cat",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like little tabby cat",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "1000": {
+            "translate_seconds": 0.060075998306274414,
+            "translate_bleu": 0.762000762001143,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white cat",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no white cat .",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "simple_dropout0.4": {
+    "alias": "simp_drop04",
+    "corpora": "SimpleData",
+    "test_sentences": [
+      [
+        "我 喜欢 黑 猫 。",
+        "I like black cat ."
+      ],
+      [
+        "我 有 一只 小 花猫 。",
+        "I have a little tabby cat . "
+      ],
+      [
+        "我 不 喜欢 白 猫",
+        "I don't like white cat"
+      ],
+      [
+        "我 有 两只 黑 猫",
+        "I have two black cat"
+      ],
+      [
+        "我 没有 白 猫",
+        "I have no white cat"
+      ],
+      [
+        "我 喜欢 小 花猫",
+        "I like little tabby cat"
+      ],
+      [
+        "我 喜欢 小 黑 猫",
+        "I like little black cat"
+      ],
+      [
+        "一只 黑 猫",
+        "a black cat"
+      ],
+      [
+        "两只 白 猫",
+        "two white cat"
+      ],
+      [
+        "没有 两只 白 猫",
+        "have no two white cat"
+      ],
+      [
+        "不 喜欢 小 花猫",
+        "don't like little tabby cat"
+      ],
+      [
+        "喜欢 小 白 猫",
+        "like little white cat"
+      ]
+    ],
+    "num_epochs": 1000,
+    "batch_size": 6,
+    "dropout": 0.4,
+    "benchmark": {
+      "lstm": {
+        "train_metric": {
+          "train_seconds": 64.71533060073853
+        },
+        "trans_metric": {
+          "50": {
+            "translate_seconds": 0.004002809524536133,
+            "translate_bleu": 0.2803645308908773,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "tabby cat",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": ".",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "little",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "100": {
+            "translate_seconds": 0.004000663757324219,
+            "translate_bleu": 0.2803645308908773,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "tabby cat",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": ".",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "little",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "200": {
+            "translate_seconds": 0.002000093460083008,
+            "translate_bleu": 0.2803645308908773,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "tabby cat",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": ".",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "little",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "300": {
+            "translate_seconds": 0.003000020980834961,
+            "translate_bleu": 0.2803645308908773,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "tabby cat",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": ".",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "little",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "400": {
+            "translate_seconds": 0.004002094268798828,
+            "translate_bleu": 0.2803645308908773,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "tabby cat",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": ".",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "little",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "600": {
+            "translate_seconds": 0.002646923065185547,
+            "translate_bleu": 0.2803645308908773,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "tabby cat",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": ".",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "little",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "800": {
+            "translate_seconds": 0.003000020980834961,
+            "translate_bleu": 0.2803645308908773,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "tabby cat",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": ".",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "little",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "1000": {
+            "translate_seconds": 0.0029997825622558594,
+            "translate_bleu": 0.2803645308908773,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I don't like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have two little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "tabby cat",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have no black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like cats .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "have",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": ".",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "little",
+                "references": "like little white cat"
+              }
+            ]
+          }
+        }
+      },
+      "transformer": {
+        "train_metric": {
+          "train_seconds": 87.56535005569458
+        },
+        "trans_metric": {
+          "50": {
+            "translate_seconds": 0.06000161170959473,
+            "translate_bleu": 0.5957847962662858,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no black cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like black cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I have",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "I like white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat .",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "100": {
+            "translate_seconds": 0.06500077247619629,
+            "translate_bleu": 0.661675861384626,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like black cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I have a",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "I white cat .",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat .",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "200": {
+            "translate_seconds": 0.07874250411987305,
+            "translate_bleu": 0.705447353291099,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a white cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I have a",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "I white",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no white cat .",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "300": {
+            "translate_seconds": 0.08268070220947266,
+            "translate_bleu": 0.752772652709081,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like black cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "I white cat",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat .",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "400": {
+            "translate_seconds": 0.08080077171325684,
+            "translate_bleu": 0.7374684055082,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a white cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "white cat",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "600": {
+            "translate_seconds": 0.0842740535736084,
+            "translate_bleu": 0.7347400037946801,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I black cat",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "I white cat",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no white cat .",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat .",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "800": {
+            "translate_seconds": 0.0875082015991211,
+            "translate_bleu": 0.7437915073806723,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like black cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "I black",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "I",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no white cat .",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat .",
+                "references": "like little white cat"
+              }
+            ]
+          },
+          "1000": {
+            "translate_seconds": 0.07087111473083496,
+            "translate_bleu": 0.759125277171481,
+            "translate_seqs": [
+              {
+                "source": "我 喜欢 黑 猫 。",
+                "translated": "I like black cat .",
+                "references": "I like black cat ."
+              },
+              {
+                "source": "我 有 一只 小 花猫 。",
+                "translated": "I have a little tabby cat .",
+                "references": "I have a little tabby cat . "
+              },
+              {
+                "source": "我 不 喜欢 白 猫",
+                "translated": "I don't like white cat .",
+                "references": "I don't like white cat"
+              },
+              {
+                "source": "我 有 两只 黑 猫",
+                "translated": "I have two black cat .",
+                "references": "I have two black cat"
+              },
+              {
+                "source": "我 没有 白 猫",
+                "translated": "I have no white cat .",
+                "references": "I have no white cat"
+              },
+              {
+                "source": "我 喜欢 小 花猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little tabby cat"
+              },
+              {
+                "source": "我 喜欢 小 黑 猫",
+                "translated": "I like little tabby cat .",
+                "references": "I like little black cat"
+              },
+              {
+                "source": "一只 黑 猫",
+                "translated": "a",
+                "references": "a black cat"
+              },
+              {
+                "source": "两只 白 猫",
+                "translated": "I",
+                "references": "two white cat"
+              },
+              {
+                "source": "没有 两只 白 猫",
+                "translated": "I have no",
+                "references": "have no two white cat"
+              },
+              {
+                "source": "不 喜欢 小 花猫",
+                "translated": "I don't like little tabby cat .",
+                "references": "don't like little tabby cat"
+              },
+              {
+                "source": "喜欢 小 白 猫",
+                "translated": "I like white cat .",
+                "references": "like little white cat"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
