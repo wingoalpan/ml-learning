@@ -43,9 +43,9 @@ benchmark_test_sentences = [('我 喜欢 黑 猫 。',  'I like black cat .'),
                         ('喜欢 小 白 猫', "like little white cat"),
                         ]
 
-benchmark_checkpoints = [50, 100, 200, 300, 400, 600, 800, 1000]
-benchmark_epochs = 1000
-benchmark_cases = {
+benchmark_checkpoints_simple = [50, 100, 200, 300, 400, 600, 800, 1000]
+benchmark_epochs_simple = 1000
+benchmark_cases_simple = {
     "simple_dropout0.0": {
         'alias': 'simp_drop0',
         'corpora': 'SimpleData',
@@ -76,6 +76,39 @@ benchmark_cases = {
         'test_sentences': benchmark_test_sentences,
         'num_epochs': 1000,
         'batch_size': 6,
+        'dropout': 0.4,
+    },
+}
+
+benchmark_checkpoints_normal = [50, 100, 150, 200]
+benchmark_epochs_normal = 200
+benchmark_cases_normal = {
+    "norm_dropout0.0": {
+        'alias': 'norm_drop0',
+        'corpora': 'TP3n9W31Data',
+        'num_epochs': 200,
+        'batch_size': 48,
+        'dropout': 0.0,
+    },
+    "norm_dropout0.1": {
+        'alias': 'norm_drop01',
+        'corpora': 'TP3n9W31Data',
+        'num_epochs': 200,
+        'batch_size': 48,
+        'dropout': 0.1,
+    },
+    "norm_dropout0.3": {
+        'alias': 'norm_drop03',
+        'corpora': 'TP3n9W31Data',
+        'num_epochs': 200,
+        'batch_size': 48,
+        'dropout': 0.3,
+    },
+    "norm_dropout0.4": {
+        'alias': 'norm_drop04',
+        'corpora': 'TP3n9W31Data',
+        'num_epochs': 200,
+        'batch_size': 48,
         'dropout': 0.4,
     },
 }
@@ -137,9 +170,13 @@ def translate(cases, model_type):
         latest_epochs = config.get('checkpoints', benchmark_checkpoints)   # [50, 100, 200, 400, 750, 1000]
         model = model_type.create_model(corpora, name=name).to(device)
         # Prepare translation inputs data
-        test_sentences = config.get('test_sentences', benchmark_test_sentences)
-        src_sentences = [item[0] for item in test_sentences]
-        refs_sentences = [[item[1]] for item in test_sentences]
+        # test_sentences = config.get('test_sentences', benchmark_test_sentences)
+        # src_sentences = [item[0] for item in test_sentences]
+        # refs_sentences = [[item[1]] for item in test_sentences]
+        test_corpora = SimpleData('test') if config.get('corpora', 'SimpleData') == 'SimpleData' else TP3n9W31Data('test')
+        src_sentences = test_corpora.sources
+        refs_sentences = [[sentence] for sentence in test_corpora.sources]
+
         enc_inputs = corpora.preprocess(src_sentences)
         # Translating with the models trained by different depth (epoch)
         for latest_epoch in latest_epochs:
@@ -165,9 +202,11 @@ def translate(cases, model_type):
                 candidates.append(prediction)
             # calculate the translation accuracy by BLEU method
             metric_bleu = bleu.bleu(candidates, refs_sentences, 2)
+            trans_file_name = '-'.join('trans', model_type.MODEL_TYPE, name, str(latest_epoch)) + '.json'
+            CM.save_json(translated_seqs, os.path.join('logs', trans_file_name))
             trans_metrics[str(latest_epoch)] = {'translate_seconds': metric_translate_seconds,
                                                 'translate_bleu': metric_bleu,
-                                                'translate_seqs': translated_seqs}
+                                                'translate_seqs': os.path.join('logs', trans_file_name)}
         # update the translation metrics (translating time consumed, bleu etc.) to cases
         model_metrics['trans_metric'] = trans_metrics
         metrics[model_type.MODEL_TYPE] = model_metrics
@@ -211,7 +250,7 @@ def report(cases):
     sheet_train = 'train metric'
     sheet_secs = 'translate secs'
     sheet_bleu = 'translate bleu'
-    with pd.ExcelWriter('benchmark/report.xlsx', engine='openpyxl') as writer:
+    with pd.ExcelWriter(report_file_name, engine='openpyxl') as writer:
         # train time consumed
         df_train.to_excel(writer, sheet_name=sheet_train, index=False)
         worksheet = writer.sheets[sheet_train]
@@ -234,24 +273,29 @@ def report(cases):
             worksheet.cell(row=1, column=i).alignment = Alignment(wrap_text=True)
 
 
+benchmark_checkpoints = benchmark_checkpoints_normal
+benchmark_epochs = benchmark_epochs_normal
+benchmark_cases = benchmark_cases_normal
+case_file_name = 'benchmark/benchmark_cases_normal.json'
+report_file_name = 'benchmark/report_normal.xlsx'
 def main():
-    test_cases = CM.load_json('benchmark/test-benchmark.json')
+    test_cases = CM.load_json(case_file_name)
     test_cases = benchmark_cases if test_cases is None else test_cases
-    train(test_cases, mt_lstm, force_retrain=False)
     train(test_cases, transformer, force_retrain=False)
+    train(test_cases, mt_lstm, force_retrain=False)
     log('saving train metrics ...')
-    CM.save_json(test_cases, 'benchmark/test-benchmark.json')
+    CM.save_json(test_cases, case_file_name)
     translate(test_cases, mt_lstm)
     translate(test_cases, transformer)
     log('printing benchmark ...')
     print(js.dumps(test_cases, indent=2, ensure_ascii=False))
     log('saving benchmark ...')
-    CM.save_json(test_cases, 'benchmark/test-benchmark.json')
+    CM.save_json(test_cases, case_file_name)
     report(test_cases)
 
 
 def gen_report():
-    cases = CM.load_json('benchmark/test-benchmark.json')
+    cases = CM.load_json(case_file_name)
     report(cases)
 
 
