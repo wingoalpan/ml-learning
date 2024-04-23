@@ -87,6 +87,7 @@ class Seq2Seq(nn.Module):
         return outputs
 
     def translate(self, enc_inputs):
+        enc_inputs = enc_inputs.to(device)
         start_symbol_idx = self.corpora.tgt_vocab[self.corpora.start_symbol]
         batch_size = enc_inputs.size(0)
         outputs = torch.zeros(batch_size, self.corpora.max_tgt_seq_len).to(device)

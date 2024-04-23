@@ -140,7 +140,7 @@ def translate(cases, model_type):
         test_sentences = config.get('test_sentences', benchmark_test_sentences)
         src_sentences = [item[0] for item in test_sentences]
         refs_sentences = [[item[1]] for item in test_sentences]
-        enc_inputs = corpora.preprocess(src_sentences).to(device)
+        enc_inputs = corpora.preprocess(src_sentences)
         # Translating with the models trained by different depth (epoch)
         for latest_epoch in latest_epochs:
             # load the trained model
@@ -222,14 +222,14 @@ def report(cases):
         df_secs.to_excel(writer, sheet_name=sheet_secs, index=False)
         worksheet = writer.sheets[sheet_secs]
         worksheet.row_dimensions[1].height = 40
-        for i in range(2, 8):
+        for i in range(2, 2 + len(secs_heads)):
             worksheet.column_dimensions[get_column_letter(i)].width = 20
             worksheet.cell(row=1, column=i).alignment = Alignment(wrap_text=True)
         # translation quality (measured by bleu)
         df_bleu.to_excel(writer, sheet_name=sheet_bleu, index=False)
         worksheet = writer.sheets[sheet_bleu]
         worksheet.row_dimensions[1].height = 40
-        for i in range(2, 8):
+        for i in range(2, 2 + len(bleu_heads)):
             worksheet.column_dimensions[get_column_letter(i)].width = 20
             worksheet.cell(row=1, column=i).alignment = Alignment(wrap_text=True)
 
