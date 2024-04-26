@@ -427,10 +427,24 @@ def main():
 
 
 def show_net():
-    net = Transformer()
+    corpora = SimpleData()
+    _dropout = 0.1
+    net = Transformer(corpora, 'simple_show_net', dropout=_dropout).to(device)
     param_count, net_info = dl_utils.get_net_detail(net, show_param_shape=True)
     logs('model detail:', net_info)
     log('total parameters: ', param_count)
+
+
+def state_dict():
+    corpora = SimpleData()
+    _dropout = 0.1
+    net = Transformer(corpora, 'simple_validate', dropout=_dropout).to(device)
+    param_count = 0
+    for k, v in net.state_dict().items():
+        num_el = v.numel()
+        param_count += num_el
+        print(k, '[%s]' % num_el)
+    log('total parameters:', param_count)
 
 
 if __name__ == "__main__":

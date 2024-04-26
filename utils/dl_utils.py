@@ -32,6 +32,17 @@ def _has_children(module):
     return False
 
 
+# 检查一个 nn.Module是否有注册的buffer
+# 输入: module -- 必须是一个 nn.Module类型的实例
+# 输出: bool
+#          True  -- module有包含子模块
+#          False -- module没有子模块
+def _has_buffers(module):
+    for _ in module.buffers():
+        return True
+    return False
+
+
 def check_net(net, x, net_name='-', level=0, as_singles=None):
     lines = []
     if level == 0:
@@ -67,7 +78,7 @@ def get_net_detail(net, net_name='-', show_param_shape=False, level=0):
     lines = []
     param_count = 0
     indent_str = ' ' * level * 2
-    if not _has_children(net):
+    if not _has_children(net) and not _has_buffers(net):
         param_count, _ = _count_params(net, show_param_shape=False)
         if param_count > 0:
             lines.append('%s(%s): %s [params: %s]' % (indent_str, net_name, net, param_count))
@@ -82,6 +93,10 @@ def get_net_detail(net, net_name='-', show_param_shape=False, level=0):
             p_count, child_info = get_net_detail(child, name, show_param_shape, level + 1)
             param_count += p_count
             children_lines.append(child_info)
+        for name, buf in net.named_buffers(recurse=False):
+            p_count, buffer_info = get_buffer_info(buf, name, show_param_shape, level + 1)
+            param_count += p_count
+            children_lines.append(buffer_info)
         lines.append('%s(%s): %s [params: %s] (' % (indent_str, net_name, net.__class__.__name__, param_count))
         lines.extend(children_lines)
         lines.append('%s)' % indent_str)
@@ -102,6 +117,25 @@ def _count_params(net, show_param_shape=False):
             p_count += cnt
         else:
             p_count += shape[0]
+    return p_count, '\n'.join(lines)
+
+
+def get_buffer_info(buf, name, show_param_shape, level):
+    p_count = 0
+    lines = []
+
+    indent_str = ' ' * level * 2
+    shape = buf.shape
+    if len(shape) > 1:
+        cnt = shape[0]
+        for i in range(1, len(shape)):
+            cnt = cnt * shape[i]
+        p_count += cnt
+    else:
+        p_count += shape[0]
+    lines.append('%s(%s): %s [params: %s]' % (indent_str, name, '<BUFFER>', p_count))
+    if show_param_shape:
+        lines.append('{indent}{param_flag} {shape}'.format(indent=' ' * 10, param_flag='#' * 4, shape=shape))
     return p_count, '\n'.join(lines)
 
 
