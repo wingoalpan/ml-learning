@@ -250,7 +250,8 @@ def validate(model, num_validate=10, num_totals=0):
     detail = []
     for src, tgt, pred in zip(src_sentences, tgt_sentences, translated):
         translated = corpora.to_tgt_sentence(pred.squeeze(0), first=True)
-        if tgt == translated:
+        tgt_std = ' '.join(tgt.split())
+        if tgt_std == translated:
             passed += 1
         else:
             failed += 1
@@ -355,6 +356,7 @@ def predict_batch(model, enc_inputs):
     x_ = torch.LongTensor(enc_inputs).to(device)
     batch_size = enc_inputs.size(0)
     terminate_tag = torch.ones(batch_size, 1) * corpora.terminate_symbol_idx
+    terminate_tag = terminate_tag.to(device)
     start_inputs = torch.zeros((enc_inputs.size(0), 1)).fill_(corpora.start_symbol_idx).long().to(device)
     dec_inputs = start_inputs
     for i in range(corpora.max_tgt_seq_len):
@@ -403,19 +405,19 @@ def test(model):
 
 
 def main():
-    # corpora = TP3n9W31Data()
-    corpora = SimpleData()
-    batch_size = 4
+    # corpora, name, batch_size, num_epochs = TP3n9W31Data(), 'classical', 48, 800
+    corpora, name, batch_size, num_epochs = SimpleData(), 'simple', 4, 200
     _dropout = 0.1
     loader = Data.DataLoader(corpora, batch_size, True)
-    model = Transformer(corpora, 'simple_validate', dropout=_dropout).to(device)
-    train(model, loader, 30, force_retrain=False)
+    model = Transformer(corpora, name, dropout=_dropout).to(device)
+    train(model, loader, num_epochs, force_retrain=False)
+    model.eval()
     # score_list = evaluate(model)
     # score_table = AsciiTable(score_list)
     # log("\n" + score_table.table)
 
     log('validating model ...')
-    result = validate(model)
+    result = validate(model, 100)
     if result['success']:
         log('validate result: OK')
     else:
