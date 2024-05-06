@@ -8,9 +8,13 @@ from dataset_P3n9W31 import TP3n9W31Data
 from dataset_simple import SimpleData
 import bleu
 from collections.abc import Iterable
+import transformers.modeling_utils as modeling_utils
+
 import transformer
 import mt_lstm
 import bench_test
+from state import save_pretrained, save_as_safetensors
+from transformer import Transformer, validate
 
 sys.path.append('..\\utils')
 sys.path.append('..\\..\\wingoal_utils')
@@ -240,6 +244,40 @@ def test_model_trained():
     log('training mt_lstm... ')
     bench_test.train(test_cases, mt_lstm, force_retrain=False)
     CM.save_json(test_cases, 'benchmark/test-benchmark-test.json')
+
+
+def test_save_safetensors():
+    state_file = 'state_dict/transformer-classical-800-model.pkl'
+    model_save_dir = 'models/transformer-P3n9W31_0.1-800'
+    save_as_safetensors(state_file, save_directory=model_save_dir, max_shard_size='60MB')
+
+
+def test_save_pretrained():
+    state_file = 'state_dict/transformer-classical-600-model.pkl'
+    model_save_dir = 'models/transformer-P3n9W31_0.1-600'
+    corpora, name, batch_size, num_epochs = TP3n9W31Data(), 'classical', 48, 800
+    _dropout = 0.1
+    model = Transformer(corpora, name, dropout=_dropout).to(device)
+    model.load_state_dict(torch.load(state_file))
+    save_pretrained(model, save_directory=model_save_dir, max_shard_size='100MB')
+
+
+def test_load_safetensors():
+    model_save_dir = 'models/transformer-P3n9W31_0.1-600'
+
+    corpora, name, batch_size, num_epochs = TP3n9W31Data(), 'classical', 48, 800
+    _dropout = 0.1
+    model = Transformer(corpora, name, dropout=_dropout).to(device)
+    modeling_utils.load_sharded_checkpoint(model, model_save_dir, strict=True, prefer_safe=True)
+    model.eval()
+
+    log('validating model ...')
+    result = validate(model, 100)
+    if result['success']:
+        log('validate result: OK')
+    else:
+        log('validate result: Failed (failed = %s, passed = %s)' % (result['failed'], result['passed']))
+        logs('validate detail:', js.dumps(result['detail'], indent=2, ensure_ascii=False))
 
 
 if __name__ == "__main__":
