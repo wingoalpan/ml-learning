@@ -15,6 +15,7 @@ import mt_lstm
 import bench_test
 from state import save_pretrained, save_as_safetensors
 from transformer import Transformer, validate
+from transformer_addon import merge_vocab, add_adapter, AdaptiveLinear
 
 sys.path.append('..\\utils')
 sys.path.append('..\\..\\wingoal_utils')
@@ -278,6 +279,97 @@ def test_load_safetensors():
     else:
         log('validate result: Failed (failed = %s, passed = %s)' % (result['failed'], result['passed']))
         logs('validate detail:', js.dumps(result['detail'], indent=2, ensure_ascii=False))
+
+
+def test_merge_vocab():
+    model_save_dir = 'models/transformer-P3n9W31_0.1-800'
+
+    corpora, name = TP3n9W31Data(), 'classical'
+    _dropout = 0.1
+    model = Transformer(corpora, name, dropout=_dropout).to(device)
+    modeling_utils.load_sharded_checkpoint(model, model_save_dir, strict=True, prefer_safe=True)
+
+    inc_copora = SimpleData()
+    merge_vocab(model, inc_copora)
+    model.train()
+
+    batch_size, num_epochs = 6, 200
+    inc_copora.update_vocab(corpora.src_vocab, corpora.tgt_vocab)
+    loader = Data.DataLoader(inc_copora, batch_size, True)
+    transformer.train(model, loader, num_epochs, force_retrain=True, checkpoint_interval=-1)
+
+    model.eval()
+
+    log('validating model ...')
+    result = validate(model, 100)
+    if result['success']:
+        log('validate result: OK')
+    else:
+        log('validate result: Failed (failed = %s, passed = %s)' % (result['failed'], result['passed']))
+        logs('validate detail:', js.dumps(result['detail'], indent=2, ensure_ascii=False))
+
+    test_sentences = [item[0] for item in bench_test.benchmark_test_sentences]
+    # test_sentences = inc_copora.sources
+    enc_inputs = model.corpora.preprocess(test_sentences)
+
+    print()
+    print("=" * 30)
+    print("利用训练好的Transformer模型将中文句子 翻译成英文句子: ")
+    dec_outputs = transformer.predict_batch(model, enc_inputs)
+    i = 0
+    for enc_input, pred in zip(enc_inputs, dec_outputs):
+        print('%s.' % (i + 1), corpora.to_src_sentence(enc_input, ''))
+        print('->', corpora.to_tgt_sentence(pred.squeeze(), first=True), '\n')
+        i += 1
+
+
+def test_add_adapter():
+    model_save_dir = 'models/transformer-P3n9W31_0.1-800'
+
+    corpora, name = TP3n9W31Data(), 'classical'
+    _dropout = 0.1
+    model = Transformer(corpora, name, dropout=_dropout).to(device)
+    modeling_utils.load_sharded_checkpoint(model, model_save_dir, strict=True, prefer_safe=True)
+
+    inc_copora = SimpleData()
+    merge_vocab(model, inc_copora)
+    add_adapter(model, rank=8)
+
+    param_count, net_info = dl_utils.get_net_detail(model, show_param_shape=True)
+    logs('model detail:', net_info)
+    log('total parameters: ', param_count)
+
+    model.train()
+
+    batch_size, num_epochs = 10, 500
+    inc_copora.update_vocab(corpora.src_vocab, corpora.tgt_vocab)
+    loader = Data.DataLoader(inc_copora, batch_size, True)
+    transformer.train(model, loader, num_epochs, force_retrain=True, checkpoint_interval=-1)
+
+    model.eval()
+
+    AdaptiveLinear.use_adapter = False
+    log('validating model ...')
+    result = validate(model, 100)
+    if result['success']:
+        log('validate result: OK')
+    else:
+        log('validate result: Failed (failed = %s, passed = %s)' % (result['failed'], result['passed']))
+        logs('validate detail:', js.dumps(result['detail'], indent=2, ensure_ascii=False))
+
+    AdaptiveLinear.use_adapter = True
+    test_sentences = [item[0] for item in bench_test.benchmark_test_sentences]
+    enc_inputs = model.corpora.preprocess(test_sentences)
+
+    print()
+    print("=" * 30)
+    print("利用训练好的Transformer模型将中文句子 翻译成英文句子: ")
+    dec_outputs = model.translate(enc_inputs)
+    i = 0
+    for enc_input, pred in zip(enc_inputs, dec_outputs):
+        print('%s.' % (i + 1), corpora.to_src_sentence(enc_input, ''))
+        print('->', corpora.to_tgt_sentence(pred.squeeze(), first=True), '\n')
+        i += 1
 
 
 if __name__ == "__main__":

@@ -275,7 +275,7 @@ def train(model, loader, num_epochs, force_retrain=False, checkpoint_interval=5,
 
     criterion = nn.CrossEntropyLoss(ignore_index=0)
     # optimizer = optim.SGD(model.parameters(), lr=1e-3, momentum=0.99)
-    optimizer = optim.Adam(model.parameters(), lr=1e-5)
+    optimizer = optim.Adam(model.parameters(), lr=5e-5)
     last_epoch = 0
     model_name = model.name if model.name else 'default'
     # 如果不强制重训练，则尝试继承之前训练结果

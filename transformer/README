@@ -1,7 +1,9 @@
 本transformer代码主要基于 https://mdnice.com/writing/fc0b920d4ca84837a5712df1a46865d2 的代码为基础版本，
 并参考了 https://github.com/P3n9W31/transformer-pytorch 的信息 进行改造而来。
 
-用于transformer 的学习和探索。 初步发现, 对于简单场景 (simple语料)， Multi-Heads Attention 层数设为4，翻译效果比层数6更好。
+用于transformer 的学习和探索。
+
+一、初步发现, 对于简单场景 (simple语料)， Multi-Heads Attention 层数设为4，翻译效果比层数6更好。
 
 增加 mt-lstm 机器翻译模型，用于和transformer模型对比。
 初步看 lstm 比 transformer有差距：
@@ -56,3 +58,13 @@ transformer翻译准确度显著高于LSTM。 lstm 的翻译严格依赖源文�
 transformer翻译结果："don't"
        lstm翻译结果："I don't like white cat ."
        
+
+二、 支持基于LORA的Adapter模式，验证情况如下：
+
+在 复杂语料 TP3n9W31Data 800轮预训练模型的基础上， 叠加 SimpleData 语料的Adapter训练（500轮）。
+训练后的Adapter模型，验证SimpleData语料，结果符合预期。 但是附加Adapter的模型，对于原TP3n9W31Data 语料，验证结果几乎100失败。
+
+因此这里我有个疑问待解：在通用大模型基础上，基于LORA机制补充训练定制场景的模型， 这个补充训练后的模型似乎扰乱了原来通用模型 对通用场景的预测能力，
+如何做到模型 在保证原来通用场景预测质量不下降的情况下，有支持定制场景的预测？
+
+待进一步探究 。。。。

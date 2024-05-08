@@ -35,6 +35,23 @@ class TransDataset(Data.Dataset):
     def __getitem__(self, idx):
         return self.enc_inputs[idx], self.dec_inputs[idx], self.dec_outputs[idx]
 
+    def _update_dataset(self):
+        src_idxs, tgt_idxs, dec_start = [], [], []
+        for src_line, tgt_line in zip(self.sources, self.targets):
+            x = [self.src_vocab.get(word, 1) for word in (src_line + ' ' + self.terminate_symbol).split()]   # 1: UNKNOWN
+            y = [self.tgt_vocab.get(word, 1) for word in (tgt_line + ' ' + self.terminate_symbol).split()]
+            y_s = [self.tgt_vocab.get(word, 1) for word in (self.start_symbol + ' ' + tgt_line).split()]
+            if len(x) <= self.max_src_seq_len and len(y) <= self.max_tgt_seq_len:
+                x.extend([0 for _ in range(self.max_src_seq_len - len(x))])
+                y.extend([0 for _ in range(self.max_tgt_seq_len - len(y))])
+                y_s.extend([0 for _ in range(self.max_tgt_seq_len - len(y_s))])
+                src_idxs.append(x)
+                tgt_idxs.append(y)
+                dec_start.append(y_s)
+        self.enc_inputs = torch.LongTensor(src_idxs)
+        self.dec_outputs = torch.LongTensor(tgt_idxs)
+        self.dec_inputs = torch.LongTensor(dec_start)
+
     # 数据加载函数，提供给子类调用
     def create_data(self, sources, targets):
         init_vocab = {self.pad_symbol: 0, self.unknown_symbol: 1, self.start_symbol: 2, self.terminate_symbol: 3}
@@ -96,6 +113,15 @@ class TransDataset(Data.Dataset):
                 self.terminate_symbol)[0].strip()
         else:
             return sep.join([self.tgt_idx2w[idx.item()] for idx in dec_output if idx >0])
+
+    def update_vocab(self, src_vocab, tgt_vocab):
+        self.src_vocab = src_vocab
+        self.tgt_vocab = tgt_vocab
+        self.src_vocab_size = len(src_vocab)
+        self.tgt_vocab_size = len(tgt_vocab)
+        self.src_idx2w = {v : k for k,v in src_vocab.items()}
+        self.tgt_idx2w = {v: k for k, v in tgt_vocab.items()}
+        self._update_dataset()
 
     def update_hyper_params(self, hyper_params):
         self.hp.load(hyper_params)
