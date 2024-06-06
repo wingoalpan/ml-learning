@@ -14,14 +14,14 @@ from collections.abc import Iterable
 from dataset_P3n9W31 import TP3n9W31Data
 from dataset_simple import SimpleData
 
-sys.path.append('..\\utils')
-sys.path.append('..\\..\\wingoal_utils')
-from common import (
+from wingoal_utils.common import (
     set_log_file,
     log,
     logs
 )
-import dl_utils
+
+sys.path.append('..')
+from utils import dl_utils
 
 set_log_file(os.path.split(__file__)[-1], timestamp=True)
 

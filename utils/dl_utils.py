@@ -14,8 +14,7 @@ import zipfile
 import re
 import json as js
 
-sys.path.append('..\\..\\wingoal_utils')
-from common import (
+from wingoal_utils.common import (
     log,
     logs
 )

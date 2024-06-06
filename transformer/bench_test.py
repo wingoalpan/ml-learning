@@ -15,9 +15,8 @@ from dataset_P3n9W31 import TP3n9W31Data
 from dataset_simple import SimpleData
 import bleu
 
-sys.path.append('..\\..\\wingoal_utils')
-import common as CM
-from common import (
+import wingoal_utils.common as CM
+from wingoal_utils.common import (
     set_log_file,
     log,
     logs

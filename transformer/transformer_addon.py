@@ -3,10 +3,9 @@ import torch
 import torch.nn as nn
 from transformer import Transformer
 
+from wingoal_utils.common import log
 sys.path.append('..\\utils')
 import dl_utils
-sys.path.append('..\\..\\wingoal_utils')
-from common import log
 
 
 class AdaptiveLinear(nn.Module):

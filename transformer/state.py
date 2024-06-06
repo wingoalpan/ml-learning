@@ -9,8 +9,7 @@ from typing import Dict, Union
 
 import transformers.modeling_utils as modeling_utils
 
-sys.path.append('..\\..\\wingoal_utils')
-from common import log
+from wingoal_utils.common import log
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 

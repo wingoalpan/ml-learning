@@ -17,14 +17,13 @@ from state import save_pretrained, save_as_safetensors
 from transformer import Transformer, validate
 from transformer_addon import merge_vocab, add_adapter, AdaptiveLinear
 
-sys.path.append('..\\utils')
-sys.path.append('..\\..\\wingoal_utils')
-import common as CM
-from common import (
+import wingoal_utils.common as CM
+from wingoal_utils.common import (
     set_log_file,
     log,
     logs
 )
+sys.path.append('..\\utils')
 import dl_utils
 
 set_log_file(os.path.split(__file__)[-1], timestamp=True)
