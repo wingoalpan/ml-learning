@@ -2,6 +2,9 @@ import os
 import codecs
 from dataset import TransDataset
 
+PACKAGE_DIR = os.path.split(__file__)[0]
+DEFAULT_CORPORA_DIR = os.path.join(PACKAGE_DIR, 'corpora')
+
 source_train = "cn.txt"
 target_train = "en.txt"
 source_test = "cn.test.txt"
@@ -26,7 +29,7 @@ demo_sentences = ['麦凯恩 担任 国会 议员 多 年 , 参加 过 越战 , 
 
 # 定义语言翻译数据集的通用接口
 class TP3n9W31Data(TransDataset):
-    def __init__(self, data_type='train', max_lines=0, corpora_dir='corpora'):
+    def __init__(self, data_type='train', max_lines=0, corpora_dir=DEFAULT_CORPORA_DIR):
         super(TP3n9W31Data, self).__init__()
         self.max_lines = max_lines
         self.corpora_dir = corpora_dir
